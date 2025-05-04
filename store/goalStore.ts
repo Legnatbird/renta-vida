@@ -108,8 +108,14 @@ export const useGoalStore = create<GoalStore>((set) => ({
           rentPeriod: 20,
           monthlyContribution: 5000,
           achievementDate: new Date('2042-06-30').toISOString(),
-          strengths: ['Earlier retirement possible', 'Higher compound growth'],
-          weaknesses: ['Requires significant monthly investment', 'Less flexibility for other financial goals']
+          strengths: [
+            'goals.strengths.earlierRetirement',
+            'goals.strengths.higherGrowth'
+          ],
+          weaknesses: [
+            'goals.weaknesses.highInvestment',
+            'goals.weaknesses.lessFlexibility'
+          ]
         },
         {
           id: 'plan-3-b',
@@ -118,8 +124,14 @@ export const useGoalStore = create<GoalStore>((set) => ({
           rentPeriod: 20,
           monthlyContribution: 4000,
           achievementDate: new Date('2044-09-30').toISOString(),
-          strengths: ['More affordable monthly contribution', 'Still achieves goal before target date'],
-          weaknesses: ['Less total accumulation', 'May need to work longer before retirement']
+          strengths: [
+            'goals.strengths.affordableContribution', 
+            'goals.strengths.achievesGoalEarly'
+          ],
+          weaknesses: [
+            'goals.weaknesses.lessAccumulation',
+            'goals.weaknesses.longerWorkPeriod'
+          ]
         }
       ]
     },

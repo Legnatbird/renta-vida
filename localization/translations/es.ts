@@ -75,6 +75,29 @@ export default {
     viewAll: 'Ver Todo',
     paymentCompleted: 'Pago Completado',
     disclaimer: 'Puedes cambiar tu plan en cualquier momento sin penalización.',
+    strengths: {
+      earlierRetirement: "Posibilidad de jubilación anticipada",
+      higherGrowth: "Mayor crecimiento compuesto",
+      affordableContribution: "Contribución mensual más accesible",
+      achievesGoalEarly: "Logra el objetivo antes de la fecha prevista",
+      quickAchievement: "Rápido logro del objetivo",
+      earlierPlanning: "Puede planificar con anticipación",
+      betterReturns: "Mayor retorno de inversión",
+      betterTimeline: "Cumple el objetivo antes de la fecha objetivo",
+      cashFlowFriendly: "Compatible con el flujo de caja actual"
+    },
+    weaknesses: {
+      highInvestment: "Requiere una inversión mensual significativa",
+      lessFlexibility: "Menos flexibilidad para otros objetivos financieros",
+      lessAccumulation: "Menor acumulación total",
+      longerWorkPeriod: "Puede necesitar trabajar más tiempo antes de jubilarse",
+      higherCommitment: "Mayor compromiso financiero mensual",
+      delayedPlanning: "Planificación ligeramente retrasada",
+      strainFinances: "El alto pago mensual puede tensionar las finanzas",
+      lessForExpenses: "Menos flexibilidad para otros gastos",
+      lowerReturns: "Rendimientos totales ligeramente inferiores",
+      longerToAchieve: "Toma más tiempo lograr el objetivo"
+    }
   },
   finances: {
     financialDashboard: 'Panel Financiero',

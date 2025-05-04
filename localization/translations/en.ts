@@ -75,6 +75,29 @@ export default {
     viewAll: 'View All',
     paymentCompleted: 'Payment Completed',
     disclaimer: 'You can change your plan at any time with no penalties.',
+    strengths: {
+      earlierRetirement: "Earlier retirement possible",
+      higherGrowth: "Higher compound growth",
+      affordableContribution: "More affordable monthly contribution",
+      achievesGoalEarly: "Still achieves goal before target date",
+      quickAchievement: "Quick achievement of goal",
+      earlierPlanning: "Can plan ahead earlier",
+      betterReturns: "Higher returns on investment",
+      betterTimeline: "Meets the goal earlier than the target date",
+      cashFlowFriendly: "Compatible with current cash flow"
+    },
+    weaknesses: {
+      highInvestment: "Requires significant monthly investment",
+      lessFlexibility: "Less flexibility for other financial goals",
+      lessAccumulation: "Less total accumulation",
+      longerWorkPeriod: "May need to work longer before retirement",
+      higherCommitment: "Higher monthly financial commitment",
+      delayedPlanning: "Slightly delayed planning",
+      strainFinances: "High monthly payment may strain finances",
+      lessForExpenses: "Less flexibility for other expenses",
+      lowerReturns: "Slightly lower total returns",
+      longerToAchieve: "Takes longer to achieve the goal"
+    }
   },
   finances: {
     financialDashboard: 'Financial Dashboard',

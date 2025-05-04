@@ -89,7 +89,7 @@ export default function RentalPlanCard({
           {plan.strengths.map((strength, index) => (
             <View key={`strength-${index}`} style={styles.pointRow}>
               <View style={[styles.pointBullet, styles.strengthBullet]} />
-              <Text style={styles.pointText}>{strength}</Text>
+              <Text style={styles.pointText}>{t(strength)}</Text>
             </View>
           ))}
         </View>
@@ -99,7 +99,7 @@ export default function RentalPlanCard({
           {plan.weaknesses.map((weakness, index) => (
             <View key={`weakness-${index}`} style={styles.pointRow}>
               <View style={[styles.pointBullet, styles.weaknessBullet]} />
-              <Text style={styles.pointText}>{weakness}</Text>
+              <Text style={styles.pointText}>{t(weakness)}</Text>
             </View>
           ))}
         </View>
