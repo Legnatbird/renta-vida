@@ -161,7 +161,7 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
           <View style={styles.planSection}>
             <Text style={styles.sectionTitle}>{t('goals.selectRentalPlan')}</Text>
             <Text style={styles.sectionDescription}>
-              {t('goals.selectPlanDescription')}
+              {t('plans.selectPlanDescription')}
             </Text>
             
             <TouchableOpacity 
