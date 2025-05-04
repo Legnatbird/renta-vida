@@ -15,6 +15,7 @@ import {
 import { theme } from '@/constants/theme';
 import { X, Upload, Paperclip } from 'lucide-react-native';
 import { useFinanceStore } from '@/store/financeStore';
+import { useTranslation } from '@/localization/i18n';
 
 interface AddFinanceModalProps {
   visible: boolean;
@@ -22,16 +23,17 @@ interface AddFinanceModalProps {
 }
 
 export default function AddFinanceModal({ visible, onClose }: AddFinanceModalProps) {
+  const { t } = useTranslation();
   const { addFinance } = useFinanceStore();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState<'bank' | 'investment' | 'expense' | 'document'>('bank');
   
   const categories: { key: 'bank' | 'investment' | 'expense' | 'document'; label: string }[] = [
-    { key: 'bank', label: 'Bank Statement' },
-    { key: 'investment', label: 'Investment' },
-    { key: 'expense', label: 'Expense' },
-    { key: 'document', label: 'Document' },
+    { key: 'bank', label: t('finances.bankStatement') },
+    { key: 'investment', label: t('finances.investment') },
+    { key: 'expense', label: t('finances.expense') },
+    { key: 'document', label: t('finances.document') },
   ];
   
   const handleSubmit = () => {
@@ -68,14 +70,14 @@ export default function AddFinanceModal({ visible, onClose }: AddFinanceModalPro
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Add Financial Document</Text>
+              <Text style={styles.modalTitle}>{t('finances.addDocument')}</Text>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                 <X size={24} color={theme.colors.text.primary} />
               </TouchableOpacity>
             </View>
             
             <ScrollView style={styles.modalContent}>
-              <Text style={styles.inputLabel}>Document Title</Text>
+              <Text style={styles.inputLabel}>{t('finances.documentTitle')}</Text>
               <TextInput
                 style={styles.input}
                 placeholder="e.g., Bank Statement June 2025"
@@ -83,7 +85,7 @@ export default function AddFinanceModal({ visible, onClose }: AddFinanceModalPro
                 onChangeText={setTitle}
               />
               
-              <Text style={styles.inputLabel}>Description (Optional)</Text>
+              <Text style={styles.inputLabel}>{t('finances.description')}</Text>
               <TextInput
                 style={[styles.input, styles.textArea]}
                 placeholder="Add details about this document"
@@ -94,7 +96,7 @@ export default function AddFinanceModal({ visible, onClose }: AddFinanceModalPro
                 textAlignVertical="top"
               />
               
-              <Text style={styles.inputLabel}>Category</Text>
+              <Text style={styles.inputLabel}>{t('finances.category')}</Text>
               <View style={styles.categoriesContainer}>
                 {categories.map((cat) => (
                   <TouchableOpacity
@@ -119,7 +121,7 @@ export default function AddFinanceModal({ visible, onClose }: AddFinanceModalPro
               
               <TouchableOpacity style={styles.uploadButton}>
                 <Paperclip size={20} color="#FFFFFF" />
-                <Text style={styles.uploadButtonText}>Attach Document</Text>
+                <Text style={styles.uploadButtonText}>{t('finances.attachDocument')}</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
@@ -130,7 +132,7 @@ export default function AddFinanceModal({ visible, onClose }: AddFinanceModalPro
                 onPress={handleSubmit}
                 disabled={!title}
               >
-                <Text style={styles.addButtonText}>Add Document</Text>
+                <Text style={styles.addButtonText}>{t('finances.addDocument')}</Text>
               </TouchableOpacity>
             </ScrollView>
           </View>

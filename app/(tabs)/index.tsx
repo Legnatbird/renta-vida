@@ -9,8 +9,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Timeline from '@/components/timeline/Timeline';
 import { useGoalStore } from '@/store/goalStore';
 import SummaryCard from '@/components/home/SummaryCard';
+import { useTranslation } from '@/localization/i18n';
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
   const { goals } = useGoalStore();
   const scrollY = useRef(new Animated.Value(0)).current;
 
@@ -48,7 +50,7 @@ export default function HomeScreen() {
               <Text style={styles.dateText}>
                 <Calendar size={16} color={theme.colors.text.secondary} /> {formattedDate}
               </Text>
-              <Text style={styles.title}>Your Financial Timeline</Text>
+              <Text style={styles.title}>{t('home.financialTimeline')}</Text>
             </View>
             <TouchableOpacity style={styles.notificationButton}>
               <Bell size={24} color={theme.colors.text.primary} />
@@ -58,16 +60,16 @@ export default function HomeScreen() {
           <SummaryCard />
 
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Your Financial Journey</Text>
+            <Text style={styles.sectionTitle}>{t('home.yourFinancialJourney')}</Text>
             <TouchableOpacity>
-              <Text style={styles.seeAllText}>See All</Text>
+              <Text style={styles.seeAllText}>{t('home.seeAll')}</Text>
             </TouchableOpacity>
           </View>
 
           <Timeline goals={goals} />
 
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Tips & Recommendations</Text>
+            <Text style={styles.sectionTitle}>{t('home.tipsAndRecommendations')}</Text>
           </View>
 
           <TouchableOpacity style={styles.tipCard}>
@@ -80,9 +82,9 @@ export default function HomeScreen() {
               <View style={styles.tipIconContainer}>
                 <Sparkles size={24} color="#FFFFFF" />
               </View>
-              <Text style={styles.tipTitle}>Optimize Your Savings</Text>
+              <Text style={styles.tipTitle}>{t('home.optimizeSavings')}</Text>
               <Text style={styles.tipDescription}>
-                Based on your goals, increasing your monthly savings by 10% could help you reach your house goal 2 years earlier.
+                {t('home.savingsTip')}
               </Text>
             </LinearGradient>
           </TouchableOpacity>

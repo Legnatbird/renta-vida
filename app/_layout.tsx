@@ -5,11 +5,22 @@ import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { useFonts, Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
 import * as SplashScreen from 'expo-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useTranslation } from '@/localization/i18n';
+import { useChatStore } from '@/store/chatStore';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   useFrameworkReady();
+  const { t } = useTranslation();
+  const { initializeMessages } = useChatStore();
+  
+  // Initialize welcome message in the user's language
+  useEffect(() => {
+    initializeMessages(
+      `${t('chat.financialAssistant')}. ${t('chat.askAnything')}`
+    );
+  }, [t]);
   
   const [fontsLoaded, fontError] = useFonts({
     'Inter-Regular': Inter_400Regular,

@@ -1,24 +1,47 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, FlatList, AccessibilityInfo } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '@/constants/theme';
 import { Plus, Filter } from 'lucide-react-native';
 import { useGoalStore } from '@/store/goalStore';
 import GoalCard from '@/components/goals/GoalCard';
 import AddGoalModal from '@/components/goals/AddGoalModal';
+import { useTranslation } from '@/localization/i18n';
 
 type FilterType = 'all' | 'short-term' | 'mid-term' | 'long-term';
 
 export default function GoalsScreen() {
+  const { t } = useTranslation();
   const { goals } = useGoalStore();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [isReducedMotion, setIsReducedMotion] = useState(false);
+
+  useEffect(() => {
+    // Check if reduced motion is enabled
+    AccessibilityInfo.isReduceMotionEnabled().then(reducedMotion => {
+      setIsReducedMotion(reducedMotion);
+    });
+
+    // Listen for changes in the reduced motion setting
+    const listener = AccessibilityInfo.addEventListener(
+      'reduceMotionChanged',
+      reducedMotion => {
+        setIsReducedMotion(reducedMotion);
+      }
+    );
+
+    return () => {
+      // Clean up listener on component unmount
+      listener.remove();
+    };
+  }, []);
 
   const filters: { key: FilterType; label: string }[] = [
-    { key: 'all', label: 'All' },
-    { key: 'short-term', label: 'Short-term' },
-    { key: 'mid-term', label: 'Mid-term' },
-    { key: 'long-term', label: 'Long-term' },
+    { key: 'all', label: t('goals.allGoals') },
+    { key: 'short-term', label: t('goals.shortTerm') },
+    { key: 'mid-term', label: t('goals.midTerm') },
+    { key: 'long-term', label: t('goals.longTerm') },
   ];
 
   const filteredGoals = goals.filter((goal) => {
@@ -38,7 +61,7 @@ export default function GoalsScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Financial Goals</Text>
+        <Text style={styles.title}>{t('goals.financialGoals')}</Text>
         <TouchableOpacity style={styles.filterButton}>
           <Filter size={20} color={theme.colors.text.primary} />
         </TouchableOpacity>
@@ -48,6 +71,9 @@ export default function GoalsScreen() {
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.filtersContainer}
+        scrollEventThrottle={16}
+        overScrollMode="never"
+        scrollEnabled={!isReducedMotion || filters.length > 3}
       >
         {filters.map((filter) => (
           <TouchableOpacity
@@ -76,9 +102,12 @@ export default function GoalsScreen() {
         renderItem={({ item }) => <GoalCard goal={item} />}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
+        overScrollMode="never"
+        maintainVisibleContentPosition={isReducedMotion ? { minIndexForVisible: 0 } : undefined}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No goals found. Add your first goal!</Text>
+            <Text style={styles.emptyText}>{t('goals.emptyGoals')}</Text>
           </View>
         }
       />

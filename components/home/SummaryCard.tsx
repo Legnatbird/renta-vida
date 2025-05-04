@@ -4,8 +4,10 @@ import { theme } from '@/constants/theme';
 import { LineChart } from 'react-native-chart-kit';
 import { ChevronRight } from 'lucide-react-native';
 import { useGoalStore } from '@/store/goalStore';
+import { useTranslation } from '@/localization/i18n';
 
 export default function SummaryCard() {
+  const { t, language } = useTranslation();
   const { goals } = useGoalStore();
   
   // Calculate total goal amount and saved amount
@@ -13,9 +15,11 @@ export default function SummaryCard() {
   const savedAmount = goals.reduce((sum, goal) => sum + (goal.amount * goal.progress / 100), 0);
   const overallProgress = totalGoalAmount > 0 ? (savedAmount / totalGoalAmount) * 100 : 0;
   
-  // Monthly savings data for the chart
+  // Monthly savings data for the chart - with localized month names and legend
   const monthlySavingsData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+    labels: language === 'es' 
+      ? ["Ene", "Feb", "Mar", "Abr", "May", "Jun"]
+      : ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
     datasets: [
       {
         data: [1500, 1800, 2200, 2000, 2400, 2600],
@@ -23,7 +27,7 @@ export default function SummaryCard() {
         strokeWidth: 2
       }
     ],
-    legend: ["Monthly Savings"]
+    legend: [t('home.monthlySavings')]
   };
   
   // Chart configuration
@@ -49,11 +53,11 @@ export default function SummaryCard() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Financial Summary</Text>
-          <Text style={styles.subtitle}>Your savings journey</Text>
+          <Text style={styles.title}>{t('home.financialSummary')}</Text>
+          <Text style={styles.subtitle}>{t('home.savingsJourney')}</Text>
         </View>
         <TouchableOpacity style={styles.viewAllButton}>
-          <Text style={styles.viewAllText}>View All</Text>
+          <Text style={styles.viewAllText}>{t('home.viewAll')}</Text>
           <ChevronRight size={16} color={theme.colors.primary} />
         </TouchableOpacity>
       </View>
@@ -61,17 +65,17 @@ export default function SummaryCard() {
       <View style={styles.statsContainer}>
         <View style={styles.statItem}>
           <Text style={styles.statValue}>${totalGoalAmount.toLocaleString()}</Text>
-          <Text style={styles.statLabel}>Goal Amount</Text>
+          <Text style={styles.statLabel}>{t('home.goalAmount')}</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
           <Text style={styles.statValue}>${Math.round(savedAmount).toLocaleString()}</Text>
-          <Text style={styles.statLabel}>Saved</Text>
+          <Text style={styles.statLabel}>{t('home.saved')}</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
           <Text style={styles.statValue}>{Math.round(overallProgress)}%</Text>
-          <Text style={styles.statLabel}>Progress</Text>
+          <Text style={styles.statLabel}>{t('home.progress')}</Text>
         </View>
       </View>
       
@@ -162,6 +166,7 @@ const styles = StyleSheet.create({
   },
   chart: {
     borderRadius: theme.borderRadius.medium,
-    marginLeft: -15, // Adjust for padding
+    marginLeft: -15,
+    fontFamily: theme.typography.fontFamily.semiBold
   },
 });

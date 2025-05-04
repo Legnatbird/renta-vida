@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { theme } from '@/constants/theme';
 import { X } from 'lucide-react-native';
+import { useTranslation } from '@/localization/i18n';
 
 interface DatePickerProps {
   visible: boolean;
@@ -19,12 +20,15 @@ interface DatePickerProps {
 }
 
 export default function DatePicker({ visible, date, onDateChange, onClose }: DatePickerProps) {
+  const { t, language } = useTranslation();
+  
   const handleDateChange = (newDate: Date) => {
     onDateChange(newDate);
   };
   
   // Generate an array of months
   const getMonths = () => {
+    // Month names could be translated based on language later
     const monthNames = [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
@@ -86,7 +90,7 @@ export default function DatePicker({ visible, date, onDateChange, onClose }: Dat
           <TouchableWithoutFeedback>
             <View style={styles.modalContainer}>
               <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Select Date</Text>
+                <Text style={styles.modalTitle}>{t('goals.targetDate')}</Text>
                 <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                   <X size={24} color={theme.colors.text.primary} />
                 </TouchableOpacity>
@@ -94,7 +98,7 @@ export default function DatePicker({ visible, date, onDateChange, onClose }: Dat
               
               <View style={styles.dateDisplay}>
                 <Text style={styles.selectedDateText}>
-                  {date.toLocaleDateString('en-US', {
+                  {date.toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', {
                     month: 'long',
                     day: 'numeric',
                     year: 'numeric'
@@ -104,7 +108,7 @@ export default function DatePicker({ visible, date, onDateChange, onClose }: Dat
               
               <View style={styles.pickerContainer}>
                 <View style={styles.pickerColumn}>
-                  <Text style={styles.pickerLabel}>Month</Text>
+                  <Text style={styles.pickerLabel}>{language === 'es' ? 'Mes' : 'Month'}</Text>
                   <View style={styles.pickerOptions}>
                     {months.map((month) => (
                       <TouchableOpacity
@@ -138,7 +142,7 @@ export default function DatePicker({ visible, date, onDateChange, onClose }: Dat
                 </View>
                 
                 <View style={styles.pickerColumn}>
-                  <Text style={styles.pickerLabel}>Day</Text>
+                  <Text style={styles.pickerLabel}>{language === 'es' ? 'Día' : 'Day'}</Text>
                   <View style={styles.pickerOptions}>
                     {days.map((day) => (
                       <TouchableOpacity
@@ -167,7 +171,7 @@ export default function DatePicker({ visible, date, onDateChange, onClose }: Dat
                 </View>
                 
                 <View style={styles.pickerColumn}>
-                  <Text style={styles.pickerLabel}>Year</Text>
+                  <Text style={styles.pickerLabel}>{language === 'es' ? 'Año' : 'Year'}</Text>
                   <View style={styles.pickerOptions}>
                     {years.map((year) => (
                       <TouchableOpacity
@@ -200,7 +204,7 @@ export default function DatePicker({ visible, date, onDateChange, onClose }: Dat
                 style={styles.doneButton}
                 onPress={onClose}
               >
-                <Text style={styles.doneButtonText}>Done</Text>
+                <Text style={styles.doneButtonText}>{language === 'es' ? 'Listo' : 'Done'}</Text>
               </TouchableOpacity>
             </View>
           </TouchableWithoutFeedback>

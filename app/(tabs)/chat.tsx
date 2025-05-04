@@ -8,8 +8,11 @@ import { useChatStore } from '@/store/chatStore';
 import { useGoalStore } from '@/store/goalStore';
 import ChatBubble from '@/components/chat/ChatBubble';
 import { processMessage } from '@/utils/chatProcessing';
+import { useTranslation } from '@/localization/i18n';
+import { Message, SenderType } from '@/types/chat';
 
 export default function ChatScreen() {
+  const { t } = useTranslation();
   const { messages, addMessage } = useChatStore();
   const { addGoal, updateGoal, removeGoal } = useGoalStore();
   const [input, setInput] = useState('');
@@ -19,11 +22,11 @@ export default function ChatScreen() {
   const handleSend = async () => {
     if (input.trim() === '') return;
     
-    // Add user message
-    const userMessage = {
+    // Add user message with correct type
+    const userMessage: Message = {
       id: Date.now().toString(),
       text: input,
-      sender: 'user',
+      sender: 'user' as SenderType,
       timestamp: new Date().toISOString(),
     };
     
@@ -38,11 +41,11 @@ export default function ChatScreen() {
     
     // Simulate network delay
     setTimeout(() => {
-      // Add bot response
-      const botMessage = {
+      // Add bot response with correct type
+      const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: response,
-        sender: 'bot',
+        sender: 'bot' as SenderType,
         timestamp: new Date().toISOString(),
       };
       
@@ -78,8 +81,8 @@ export default function ChatScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Financial Assistant</Text>
-          <Text style={styles.subtitle}>Ask anything about your financial goals</Text>
+          <Text style={styles.title}>{t('chat.financialAssistant')}</Text>
+          <Text style={styles.subtitle}>{t('chat.askAnything')}</Text>
         </View>
       </View>
 
@@ -100,28 +103,28 @@ export default function ChatScreen() {
               <View style={styles.assistantIconContainer}>
                 <Sparkles size={32} color="#FFFFFF" />
               </View>
-              <Text style={styles.emptyTitle}>Financial Assistant</Text>
+              <Text style={styles.emptyTitle}>{t('chat.financialAssistant')}</Text>
               <Text style={styles.emptyText}>
-                I can help you manage your financial goals, create a financial plan, and answer questions about your financial journey.
+                {t('chat.emptyChat')}
               </Text>
               <View style={styles.suggestionsContainer}>
                 <TouchableOpacity
                   style={styles.suggestionButton}
-                  onPress={() => setInput('I want to save for a house in 5 years')}
+                  onPress={() => setInput(t('chat.savingsGoalExample'))}
                 >
-                  <Text style={styles.suggestionText}>Set a savings goal</Text>
+                  <Text style={styles.suggestionText}>{t('chat.setSavingsGoal')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.suggestionButton}
-                  onPress={() => setInput('How much should I save monthly for retirement?')}
+                  onPress={() => setInput(t('chat.retirementExample'))}
                 >
-                  <Text style={styles.suggestionText}>Retirement planning</Text>
+                  <Text style={styles.suggestionText}>{t('chat.retirementPlanning')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.suggestionButton}
-                  onPress={() => setInput('Help me create a budget')}
+                  onPress={() => setInput(t('chat.budgetExample'))}
                 >
-                  <Text style={styles.suggestionText}>Create a budget</Text>
+                  <Text style={styles.suggestionText}>{t('chat.createBudget')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -134,7 +137,7 @@ export default function ChatScreen() {
             exiting={FadeOut} 
             style={styles.typingContainer}
           >
-            <Text style={styles.typingText}>Assistant is typing...</Text>
+            <Text style={styles.typingText}>{t('chat.assistantTyping')}</Text>
           </Animated.View>
         )}
 
@@ -144,7 +147,7 @@ export default function ChatScreen() {
           </TouchableOpacity>
           <TextInput
             style={styles.input}
-            placeholder="Type a message..."
+            placeholder={t('chat.typeMessage')}
             value={input}
             onChangeText={setInput}
             multiline

@@ -2,8 +2,11 @@ import { Tabs } from 'expo-router';
 import { Platform } from 'react-native';
 import { Chrome as Home, Target, DollarSign, MessageSquare, Settings } from 'lucide-react-native';
 import { theme } from '@/constants/theme';
+import { useTranslation } from '@/localization/i18n';
 
 export default function TabLayout() {
+  const { t } = useTranslation();
+  
   return (
     <Tabs
       screenOptions={{
@@ -18,7 +21,7 @@ export default function TabLayout() {
           borderTopWidth: 1,
           borderTopColor: theme.colors.border,
           height: Platform.OS === 'ios' ? 88 : 68,
-          paddingTop: 8,
+          paddingTop: 4,
           paddingBottom: Platform.OS === 'ios' ? 28 : 8,
           backgroundColor: theme.colors.background,
         },
@@ -28,35 +31,35 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Timeline',
+          title: t('common.timeline'),
           tabBarIcon: ({ color, size }) => <Home size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="goals"
         options={{
-          title: 'Goals',
+          title: t('common.goals'),
           tabBarIcon: ({ color, size }) => <Target size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="finances"
         options={{
-          title: 'Finances',
+          title: t('common.finances'),
           tabBarIcon: ({ color, size }) => <DollarSign size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="chat"
         options={{
-          title: 'Assistant',
+          title: t('common.assistant'),
           tabBarIcon: ({ color, size }) => <MessageSquare size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
-          title: 'Settings',
+          title: t('common.settings'),
           tabBarIcon: ({ color, size }) => <Settings size={size} color={color} />,
         }}
       />

@@ -4,12 +4,15 @@ import { theme } from '@/constants/theme';
 import { format, isAfter, isBefore, isToday } from 'date-fns';
 import { Check, ArrowRight } from 'lucide-react-native';
 import { Goal } from '@/types/goals';
+import { useTranslation } from '@/localization/i18n';
 
 interface TimelineProps {
   goals: Goal[];
 }
 
 export default function Timeline({ goals }: TimelineProps) {
+  const { t } = useTranslation();
+  
   const sortedGoals = [...goals].sort((a, b) => {
     return new Date(a.targetDate).getTime() - new Date(b.targetDate).getTime();
   });

@@ -16,6 +16,7 @@ import { theme } from '@/constants/theme';
 import { X, Calendar } from 'lucide-react-native';
 import DatePicker from '@/components/ui/DatePicker';
 import { useGoalStore } from '@/store/goalStore';
+import { useTranslation } from '@/localization/i18n';
 
 interface AddGoalModalProps {
   visible: boolean;
@@ -23,6 +24,7 @@ interface AddGoalModalProps {
 }
 
 export default function AddGoalModal({ visible, onClose }: AddGoalModalProps) {
+  const { t } = useTranslation();
   const { addGoal } = useGoalStore();
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
@@ -80,22 +82,22 @@ export default function AddGoalModal({ visible, onClose }: AddGoalModalProps) {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Add New Goal</Text>
+              <Text style={styles.modalTitle}>{t('goals.newGoal')}</Text>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                 <X size={24} color={theme.colors.text.primary} />
               </TouchableOpacity>
             </View>
             
             <ScrollView style={styles.modalContent}>
-              <Text style={styles.inputLabel}>Goal Title</Text>
+              <Text style={styles.inputLabel}>{t('goals.goalTitle')}</Text>
               <TextInput
                 style={styles.input}
-                placeholder="e.g., Buy a house"
+                placeholder={t('goals.goalPlaceholder')}
                 value={title}
                 onChangeText={setTitle}
               />
               
-              <Text style={styles.inputLabel}>Target Amount</Text>
+              <Text style={styles.inputLabel}>{t('goals.targetAmount')}</Text>
               <View style={styles.amountInputContainer}>
                 <Text style={styles.currencySymbol}>$</Text>
                 <TextInput
@@ -107,7 +109,7 @@ export default function AddGoalModal({ visible, onClose }: AddGoalModalProps) {
                 />
               </View>
               
-              <Text style={styles.inputLabel}>Target Date</Text>
+              <Text style={styles.inputLabel}>{t('goals.targetDate')}</Text>
               <TouchableOpacity 
                 style={styles.datePickerButton}
                 onPress={() => setShowDatePicker(true)}
@@ -129,31 +131,35 @@ export default function AddGoalModal({ visible, onClose }: AddGoalModalProps) {
                 onClose={() => setShowDatePicker(false)}
               />
               
-              <Text style={styles.inputLabel}>Priority</Text>
+              <Text style={styles.inputLabel}>{t('goals.priority')}</Text>
               <View style={styles.priorityContainer}>
-                {(['low', 'medium', 'high'] as const).map((p) => (
+                {([
+                  { key: 'low', label: t('goals.low') },
+                  { key: 'medium', label: t('goals.medium') },
+                  { key: 'high', label: t('goals.high') }
+                ] as const).map((p) => (
                   <TouchableOpacity
-                    key={p}
+                    key={p.key}
                     style={[
                       styles.priorityButton,
-                      priority === p && styles.activePriorityButton,
-                      priority === p && { borderColor: getPriorityColor(p) },
+                      priority === p.key && styles.activePriorityButton,
+                      priority === p.key && { borderColor: getPriorityColor(p.key) },
                     ]}
-                    onPress={() => setPriority(p)}
+                    onPress={() => setPriority(p.key)}
                   >
                     <View 
                       style={[
                         styles.priorityDot, 
-                        { backgroundColor: getPriorityColor(p) }
+                        { backgroundColor: getPriorityColor(p.key) }
                       ]} 
                     />
                     <Text 
                       style={[
                         styles.priorityText,
-                        priority === p && styles.activePriorityText,
+                        priority === p.key && styles.activePriorityText,
                       ]}
                     >
-                      {p.charAt(0).toUpperCase() + p.slice(1)}
+                      {p.label}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -167,7 +173,7 @@ export default function AddGoalModal({ visible, onClose }: AddGoalModalProps) {
                 onPress={handleSubmit}
                 disabled={!title || !amount}
               >
-                <Text style={styles.addButtonText}>Add Goal</Text>
+                <Text style={styles.addButtonText}>{t('goals.addGoal')}</Text>
               </TouchableOpacity>
             </ScrollView>
           </View>

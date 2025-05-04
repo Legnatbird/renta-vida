@@ -3,50 +3,53 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from 're
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '@/constants/theme';
 import { User, Bell, Shield, CircleHelp as HelpCircle, Info, LogOut, ChevronRight } from 'lucide-react-native';
+import { useTranslation } from '@/localization/i18n';
+import LanguageSelector from '@/components/settings/LanguageSelector';
 
 export default function SettingsScreen() {
+  const { t } = useTranslation();
   const [notifications, setNotifications] = React.useState(true);
   const [darkMode, setDarkMode] = React.useState(false);
   
   const sections = [
     {
-      title: 'Account',
+      title: t('settings.account'),
       items: [
         {
           icon: <User size={20} color={theme.colors.primary} />,
-          label: 'Profile',
+          label: t('settings.profile'),
           action: 'navigate',
         }
       ]
     },
     {
-      title: 'Preferences',
+      title: t('settings.preferences'),
       items: [
         {
           icon: <Bell size={20} color={theme.colors.primary} />,
-          label: 'Notifications',
+          label: t('settings.notifications'),
           action: 'toggle',
           value: notifications,
           onToggle: () => setNotifications(!notifications),
         },
         {
           icon: <Shield size={20} color={theme.colors.primary} />,
-          label: 'Privacy',
+          label: t('settings.privacy'),
           action: 'navigate',
         }
       ]
     },
     {
-      title: 'Support',
+      title: t('settings.support'),
       items: [
         {
           icon: <HelpCircle size={20} color={theme.colors.primary} />,
-          label: 'Help Center',
+          label: t('settings.helpCenter'),
           action: 'navigate',
         },
         {
           icon: <Info size={20} color={theme.colors.primary} />,
-          label: 'About',
+          label: t('settings.about'),
           action: 'navigate',
         }
       ]
@@ -56,7 +59,7 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
-        <Text style={styles.title}>Settings</Text>
+        <Text style={styles.title}>{t('settings.title')}</Text>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -69,7 +72,7 @@ export default function SettingsScreen() {
             <Text style={styles.profileEmail}>john.doe@example.com</Text>
           </View>
           <TouchableOpacity style={styles.editButton}>
-            <Text style={styles.editButtonText}>Edit</Text>
+            <Text style={styles.editButtonText}>{t('settings.edit')}</Text>
           </TouchableOpacity>
         </View>
 
@@ -103,13 +106,18 @@ export default function SettingsScreen() {
             </View>
           </View>
         ))}
+        
+        {/* Language Selector */}
+        <View style={styles.section}>
+          <LanguageSelector />
+        </View>
 
         <TouchableOpacity style={styles.logoutButton}>
           <LogOut size={20} color={theme.colors.error} />
-          <Text style={styles.logoutText}>Log Out</Text>
+          <Text style={styles.logoutText}>{t('settings.logout')}</Text>
         </TouchableOpacity>
 
-        <Text style={styles.versionText}>Version 1.0.0</Text>
+        <Text style={styles.versionText}>{t('settings.version')} 1.0.0</Text>
       </ScrollView>
     </SafeAreaView>
   );
