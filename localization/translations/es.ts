@@ -38,6 +38,7 @@ export default {
     confirmSelection: "Confirmar Selección"
   },
   goals: {
+    achievement: 'Fecha prevista',
     financialGoals: 'Objetivos Financieros',
     allGoals: 'Todos',
     shortTerm: 'Corto plazo',
@@ -76,7 +77,12 @@ export default {
     goalPlaceholder: 'ej., Comprar una casa',
     month: 'mes',
     makePayment: 'Realizar Pago',
-    achievement: 'Logro estimado',
+    paymentHistory: 'Historial de Pagos',
+    viewAll: 'Ver Todo',
+    paymentCompleted: 'Pago Completado',
+    projectedProgress: 'Progreso Proyectado',
+    currentProgress: 'Progreso Actual',
+    noPendingPayments: 'Sin Pagos Pendientes',
     rentalPlans: 'Planes de Renta Voluntaria',
     strengths: {
       earlierRetirement: "Posibilidad de jubilación anticipada",

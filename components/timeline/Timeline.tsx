@@ -5,6 +5,7 @@ import { format, isAfter, isBefore, isToday } from 'date-fns';
 import { Check, ArrowRight } from 'lucide-react-native';
 import { Goal } from '@/types/goals';
 import { useTranslation } from '@/localization/i18n';
+import { useRouter } from 'expo-router';
 
 interface TimelineProps {
   goals: Goal[];
@@ -12,6 +13,7 @@ interface TimelineProps {
 
 export default function Timeline({ goals }: TimelineProps) {
   const { t } = useTranslation();
+  const router = useRouter();
   
   const sortedGoals = [...goals].sort((a, b) => {
     return new Date(a.targetDate).getTime() - new Date(b.targetDate).getTime();
@@ -24,6 +26,13 @@ export default function Timeline({ goals }: TimelineProps) {
     if (isToday(targetDate)) return 'current';
     if (isBefore(targetDate, now)) return 'completed';
     return 'future';
+  };
+
+  const handleGoalPress = (goalId: string) => {
+    router.push({
+      pathname: '/goal-details',
+      params: { id: goalId }
+    });
   };
 
   return (
@@ -58,7 +67,10 @@ export default function Timeline({ goals }: TimelineProps) {
               )}
             </View>
             
-            <TouchableOpacity style={styles.timelineContent}>
+            <TouchableOpacity 
+              style={styles.timelineContent}
+              onPress={() => handleGoalPress(goal.id)}
+            >
               <Text style={styles.timelineDate}>
                 {format(new Date(goal.targetDate), 'MMM yyyy')}
               </Text>
