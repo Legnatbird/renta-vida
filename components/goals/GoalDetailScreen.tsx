@@ -187,15 +187,15 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
                         No pending payments at this time.
                       </Text>
                       <Text style={styles.nextPaymentText}>
-                        Next payment will be due on {format(nextPaymentDate, 'MMMM d, yyyy')}
+                        {t('goals.nextPaymentDue')} {format(nextPaymentDate, 'MMMM d, yyyy')}
                       </Text>
                     </View>
                   )}
                   
                   <View style={styles.paymentHistoryContainer}>
-                    <Text style={styles.paymentHistoryTitle}>Payment History</Text>
+                    <Text style={styles.paymentHistoryTitle}>{t('goals.paymentHistory')}</Text>
                     <TouchableOpacity style={styles.viewAllButton}>
-                      <Text style={styles.viewAllButtonText}>View All</Text>
+                      <Text style={styles.viewAllButtonText}>{t('goals.viewAll')}</Text>
                       <ArrowLeft size={16} color={theme.colors.primary} style={{ transform: [{rotate: '180deg'}] }} />
                     </TouchableOpacity>
                   </View>
@@ -206,7 +206,7 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
                       <DollarSign size={16} color={theme.colors.success} />
                     </View>
                     <View style={styles.paymentEntryContent}>
-                      <Text style={styles.paymentEntryTitle}>Payment Completed</Text>
+                      <Text style={styles.paymentEntryTitle}>{t('goals.paymentCompleted')}</Text>
                       <Text style={styles.paymentEntryDate}>
                         {format(new Date(new Date().setMonth(new Date().getMonth() - 1)), 'MMMM d, yyyy')}
                       </Text>
@@ -221,7 +221,7 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
                       <DollarSign size={16} color={theme.colors.success} />
                     </View>
                     <View style={styles.paymentEntryContent}>
-                      <Text style={styles.paymentEntryTitle}>Payment Completed</Text>
+                      <Text style={styles.paymentEntryTitle}>{t('goals.paymentCompleted')}</Text>
                       <Text style={styles.paymentEntryDate}>
                         {format(new Date(new Date().setMonth(new Date().getMonth() - 2)), 'MMMM d, yyyy')}
                       </Text>
