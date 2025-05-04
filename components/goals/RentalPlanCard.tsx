@@ -4,6 +4,7 @@ import { theme } from '@/constants/theme';
 import { RentalPlan } from '@/types/goals';
 import { useTranslation } from '@/localization/i18n';
 import { format } from 'date-fns';
+import { es, enUS } from 'date-fns/locale';
 import { Check, Calendar, DollarSign } from 'lucide-react-native';
 
 interface RentalPlanCardProps {
@@ -17,8 +18,9 @@ export default function RentalPlanCard({
   isSelected = false, 
   onSelect 
 }: RentalPlanCardProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const achievementDate = new Date(plan.achievementDate);
+  const dateLocale = language === 'es' ? es : enUS;
   
   return (
     <TouchableOpacity 
@@ -30,95 +32,78 @@ export default function RentalPlanCard({
       disabled={!onSelect}
     >
       <View style={styles.header}>
-        <Text style={styles.title}>{t(plan.name.startsWith('Plan A') ? 'goals.planA' : 'goals.planB')}</Text>
+        <Text style={styles.title}>{t(plan.name.startsWith('Plan A') ? 'plans.planA' : 'plans.planB')}</Text>
         {isSelected && (
           <View style={styles.selectedBadge}>
-            <Check size={12} color="#FFFFFF" />
-            <Text style={styles.selectedText}>{t('goals.selected')}</Text>
+            <Text style={styles.selectedBadgeText}>{t('plans.selected')}</Text>
+            <Check size={14} color="#FFFFFF" />
           </View>
         )}
       </View>
       
       <View style={styles.detailsContainer}>
         <View style={styles.detailRow}>
-          <View style={styles.iconContainer}>
-            <DollarSign size={16} color={theme.colors.primary} />
-          </View>
-          <View style={styles.detailContent}>
-            <Text style={styles.detailLabel}>{t('goals.monthlyRent')}:</Text>
-            <Text style={styles.detailValue}>${plan.monthlyRent.toLocaleString()}</Text>
-          </View>
+          <Text style={styles.detailLabel}>{t('plans.monthlyRent')}:</Text>
+          <Text style={styles.detailValue}>${plan.monthlyRent.toLocaleString()}</Text>
         </View>
         
         <View style={styles.detailRow}>
-          <View style={styles.iconContainer}>
-            <Calendar size={16} color={theme.colors.primary} />
-          </View>
-          <View style={styles.detailContent}>
-            <Text style={styles.detailLabel}>{t('goals.rentPeriod')}:</Text>
-            <Text style={styles.detailValue}>{plan.rentPeriod} {t('goals.years')}</Text>
-          </View>
+          <Text style={styles.detailLabel}>{t('plans.rentPeriod')}:</Text>
+          <Text style={styles.detailValue}>{plan.rentPeriod} {t('plans.years')}</Text>
         </View>
         
         <View style={styles.detailRow}>
-          <View style={styles.iconContainer}>
-            <DollarSign size={16} color={theme.colors.success} />
-          </View>
-          <View style={styles.detailContent}>
-            <Text style={styles.detailLabel}>{t('goals.monthlyContribution')}:</Text>
-            <Text style={styles.detailValue}>${plan.monthlyContribution.toLocaleString()}</Text>
-          </View>
-        </View>
-        
-        <View style={styles.detailRow}>
-          <View style={styles.iconContainer}>
-            <Calendar size={16} color={theme.colors.success} />
-          </View>
-          <View style={styles.detailContent}>
-            <Text style={styles.detailLabel}>{t('goals.achievementDate')}:</Text>
-            <Text style={styles.detailValue}>
-              {format(achievementDate, 'MMMM yyyy')}
-            </Text>
-          </View>
-        </View>
-      </View>
-      
-      <View style={styles.pointsContainer}>
-        <View style={styles.pointsSection}>
-          <Text style={styles.pointsTitle}>{t('goals.planStrengths')}</Text>
-          {plan.strengths.map((strength, index) => (
-            <View key={`strength-${index}`} style={styles.pointRow}>
-              <View style={[styles.pointBullet, styles.strengthBullet]} />
-              <Text style={styles.pointText}>{t(strength)}</Text>
-            </View>
-          ))}
-        </View>
-        
-        <View style={styles.pointsSection}>
-          <Text style={styles.pointsTitle}>{t('goals.planWeaknesses')}</Text>
-          {plan.weaknesses.map((weakness, index) => (
-            <View key={`weakness-${index}`} style={styles.pointRow}>
-              <View style={[styles.pointBullet, styles.weaknessBullet]} />
-              <Text style={styles.pointText}>{t(weakness)}</Text>
-            </View>
-          ))}
-        </View>
-      </View>
-      
-      {onSelect && (
-        <TouchableOpacity 
-          style={[
-            styles.selectButton,
-            isSelected && styles.selectedButton
-          ]}
-          onPress={onSelect}
-        >
-          <Text style={[
-            styles.selectButtonText,
-            isSelected && styles.selectedButtonText
-          ]}>
-            {isSelected ? t('goals.selected') : t('goals.selectThisPlan')}
+          <Text style={styles.detailLabel}>{t('plans.monthlyContribution')}:</Text>
+          <Text style={[styles.detailValue, styles.highlightedValue]}>
+            ${plan.monthlyContribution.toLocaleString()}
           </Text>
+        </View>
+        
+        <View style={styles.detailRow}>
+          <Text style={styles.detailLabel}>{t('plans.achievementDate')}:</Text>
+          <Text style={[styles.detailValue, styles.highlightedValue]}>{format(achievementDate, 'MMMM yyyy', { locale: dateLocale })}</Text>
+        </View>
+      </View>
+      
+      <View style={styles.proConContainer}>
+        <View style={styles.proSection}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>{t('plans.planStrengths')}</Text>
+          </View>
+          
+          <View style={styles.itemsList}>
+            {plan.strengths.map((strength, index) => (
+              <View key={`strength-${index}`} style={styles.listItem}>
+                <View style={styles.bulletPoint} />
+                <Text style={styles.listItemText}>
+                  {t(strength)}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </View>
+        
+        <View style={styles.conSection}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>{t('plans.planWeaknesses')}</Text>
+          </View>
+          
+          <View style={styles.itemsList}>
+            {plan.weaknesses.map((weakness, index) => (
+              <View key={`weakness-${index}`} style={styles.listItem}>
+                <View style={[styles.bulletPoint, styles.weaknessBullet]} />
+                <Text style={styles.listItemText}>
+                  {t(weakness)}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      </View>
+      
+      {!isSelected && (
+        <TouchableOpacity style={styles.selectButton} onPress={onSelect}>
+          <Text style={styles.selectButtonText}>{t('plans.selectThisPlan')}</Text>
         </TouchableOpacity>
       )}
     </TouchableOpacity>
@@ -159,7 +144,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     borderRadius: theme.borderRadius.small,
   },
-  selectedText: {
+  selectedBadgeText: {
     fontFamily: theme.typography.fontFamily.medium,
     fontSize: theme.typography.fontSize.xs,
     color: '#FFFFFF',
@@ -176,20 +161,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: theme.spacing.sm,
   },
-  iconContainer: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: 'rgba(0, 102, 204, 0.1)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: theme.spacing.sm,
-  },
-  detailContent: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   detailLabel: {
     fontFamily: theme.typography.fontFamily.medium,
     fontSize: theme.typography.fontSize.sm,
@@ -200,36 +171,48 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSize.sm,
     color: theme.colors.text.primary,
   },
-  pointsContainer: {
+  highlightedValue: {
+    color: theme.colors.primary,
+  },
+  proConContainer: {
     marginBottom: theme.spacing.md,
   },
-  pointsSection: {
+  proSection: {
     marginBottom: theme.spacing.md,
   },
-  pointsTitle: {
+  conSection: {
+    marginBottom: theme.spacing.md,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: theme.spacing.sm,
+  },
+  sectionTitle: {
     fontFamily: theme.typography.fontFamily.semiBold,
     fontSize: theme.typography.fontSize.sm,
     color: theme.colors.text.primary,
-    marginBottom: theme.spacing.sm,
+    marginLeft: theme.spacing.sm,
   },
-  pointRow: {
+  itemsList: {
+    marginLeft: 24,
+  },
+  listItem: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 6,
   },
-  pointBullet: {
+  bulletPoint: {
     width: 6,
     height: 6,
     borderRadius: 3,
-    marginRight: theme.spacing.sm,
-  },
-  strengthBullet: {
     backgroundColor: theme.colors.success,
+    marginRight: theme.spacing.sm,
   },
   weaknessBullet: {
     backgroundColor: theme.colors.error,
   },
-  pointText: {
+  listItemText: {
     fontFamily: theme.typography.fontFamily.regular,
     fontSize: theme.typography.fontSize.sm,
     color: theme.colors.text.secondary,
@@ -243,15 +226,9 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.md,
     alignItems: 'center',
   },
-  selectedButton: {
-    backgroundColor: theme.colors.primary,
-  },
   selectButtonText: {
     fontFamily: theme.typography.fontFamily.semiBold,
     fontSize: theme.typography.fontSize.md,
     color: theme.colors.primary,
-  },
-  selectedButtonText: {
-    color: '#FFFFFF',
   },
 });

@@ -184,7 +184,7 @@ export default function GoalCard({ goal, onPress }: GoalCardProps) {
               onPress={handlePayment}
             >
               <Text style={[styles.actionButtonText, styles.paymentButtonText]}>
-                {t('goals.makePayment')} (${goal.pendingPayment.toLocaleString()})
+                {t('payment.makePayment')} (${goal.pendingPayment.toLocaleString()})
               </Text>
               <CreditCard size={16} color="#FFFFFF" />
             </TouchableOpacity>

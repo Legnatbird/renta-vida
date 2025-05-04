@@ -54,7 +54,7 @@ export default function PlanSelectionModal({
           
           <ScrollView style={styles.modalContent}>
             <Text style={styles.introText}>
-              {t('goals.selectPlanDescription')}
+              {t('plans.selectPlanDescription')}
             </Text>
             
             {goal.plans?.map((plan) => (
@@ -67,7 +67,7 @@ export default function PlanSelectionModal({
             ))}
             
             <Text style={styles.disclaimer}>
-              * {t('goals.disclaimer')}
+              * {t('plans.disclaimer')}
             </Text>
           </ScrollView>
           
@@ -80,7 +80,7 @@ export default function PlanSelectionModal({
               onPress={handleConfirmSelection}
               disabled={!selectedPlanId}
             >
-              <Text style={styles.confirmButtonText}>{t('goals.confirmSelection')}</Text>
+              <Text style={styles.confirmButtonText}>{t('plans.confirmSelection')}</Text>
               <ArrowRight size={20} color="#FFFFFF" />
             </TouchableOpacity>
           </View>

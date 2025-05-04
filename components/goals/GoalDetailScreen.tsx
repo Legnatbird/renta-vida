@@ -9,9 +9,11 @@ import {
 } from 'react-native';
 import { theme } from '@/constants/theme';
 import { format } from 'date-fns';
+import { es, enUS } from 'date-fns/locale';
 import { Goal } from '@/types/goals';
 import { ArrowLeft, CreditCard, Clock, BarChart3, Calendar, DollarSign, Award } from 'lucide-react-native';
 import { useTranslation } from '@/localization/i18n';
+import { useNavigation } from '@react-navigation/native';
 import RentalPlanCard from './RentalPlanCard';
 import GoalProgressChart from './GoalProgressChart';
 import PaymentModal from './PaymentModal';
@@ -19,17 +21,30 @@ import PlanSelectionModal from './PlanSelectionModal';
 
 interface GoalDetailScreenProps {
   goal: Goal;
-  onBack: () => void;
+  onBack?: () => void; // Make onBack optional
 }
 
 export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [isPlanModalVisible, setIsPlanModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
+  const navigation = useNavigation(); // Get navigation object
+  
+  // Function to handle back navigation
+  const handleBack = () => {
+    if (onBack) {
+      onBack(); // Use provided onBack function if available
+    } else if (navigation.canGoBack()) {
+      navigation.goBack(); // Use React Navigation's goBack if possible
+    }
+  };
   
   // Get selected plan
   const selectedPlan = goal.plans?.find(plan => plan.id === goal.selectedPlan);
   const nextPaymentDate = goal.nextPaymentDate ? new Date(goal.nextPaymentDate) : new Date();
+  
+  // Set date locale based on current language
+  const dateLocale = language === 'es' ? es : enUS;
   
   const getStatusBadgeColor = () => {
     switch (goal.status) {
@@ -47,23 +62,37 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
   const getStatusLabel = () => {
     switch (goal.status) {
       case 'configuration':
-        return 'In Configuration';
+        return t('goals.configuration');
       case 'in_progress':
-        return 'In Progress';
+        return t('goals.in_progress');
       case 'completed':
-        return 'Completed';
+        return t('goals.completed');
       default:
-        return 'Unknown';
+        return t('goals.unknown');
+    }
+  };
+  
+  // Traduce la prioridad
+  const getPriorityLabel = () => {
+    switch (goal.priority) {
+      case 'high':
+        return t('goals.highPriority');
+      case 'medium':
+        return t('goals.mediumPriority');
+      case 'low':
+        return t('goals.lowPriority');
+      default:
+        return t('goals.unknownPriority');
     }
   };
   
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={onBack} style={styles.backButton}>
+        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
           <ArrowLeft size={24} color={theme.colors.text.primary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Goal Details</Text>
+        <Text style={styles.headerTitle}>{t('goals.goalDetails')}</Text>
         <View style={{ width: 24 }} />
       </View>
       
@@ -79,7 +108,7 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
           
           <View style={styles.amountContainer}>
             <Text style={styles.targetAmount}>${goal.amount.toLocaleString()}</Text>
-            <Text style={styles.amountLabel}>Target Amount</Text>
+            <Text style={styles.amountLabel}>{t('goals.targetAmount')}</Text>
           </View>
           
           <View style={styles.progressBarContainer}>
@@ -91,7 +120,7 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
               ]} 
             />
           </View>
-          <Text style={styles.progressText}>{goal.progress}% Complete</Text>
+          <Text style={styles.progressText}>{goal.progress}% {t('goals.complete')}</Text>
         </View>
         
         <View style={styles.infoSection}>
@@ -100,9 +129,9 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
               <Calendar size={20} color={theme.colors.primary} />
             </View>
             <View style={styles.infoContent}>
-              <Text style={styles.infoLabel}>Target Date:</Text>
+              <Text style={styles.infoLabel}>{t('goals.targetDate')}:</Text>
               <Text style={styles.infoValue}>
-                {format(new Date(goal.targetDate), 'MMMM d, yyyy')}
+                {format(new Date(goal.targetDate), 'MMMM d, yyyy', { locale: dateLocale })}
               </Text>
             </View>
           </View>
@@ -112,16 +141,16 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
               <Award size={20} color={theme.colors.primary} />
             </View>
             <View style={styles.infoContent}>
-              <Text style={styles.infoLabel}>Priority:</Text>
+              <Text style={styles.infoLabel}>{t('goals.priority')}:</Text>
               <Text style={styles.infoValue}>
-                {goal.priority.charAt(0).toUpperCase() + goal.priority.slice(1)}
+                {getPriorityLabel()}
               </Text>
             </View>
           </View>
           
           {goal.description && (
             <View style={styles.descriptionContainer}>
-              <Text style={styles.descriptionLabel}>Description:</Text>
+              <Text style={styles.descriptionLabel}>{t('goals.description')}:</Text>
               <Text style={styles.descriptionText}>{goal.description}</Text>
             </View>
           )}
@@ -130,21 +159,21 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
         {/* Rental Plan Section */}
         {goal.status === 'configuration' ? (
           <View style={styles.planSection}>
-            <Text style={styles.sectionTitle}>Select a Rental Plan</Text>
+            <Text style={styles.sectionTitle}>{t('goals.selectRentalPlan')}</Text>
             <Text style={styles.sectionDescription}>
-              Choose a voluntary rental plan that suits your financial needs and goals timeline.
+              {t('goals.selectPlanDescription')}
             </Text>
             
             <TouchableOpacity 
               style={styles.selectPlanButton}
               onPress={() => setIsPlanModalVisible(true)}
             >
-              <Text style={styles.selectPlanButtonText}>View Available Plans</Text>
+              <Text style={styles.selectPlanButtonText}>{t('goals.viewAvailablePlans')}</Text>
             </TouchableOpacity>
           </View>
         ) : selectedPlan ? (
           <View style={styles.planSection}>
-            <Text style={styles.sectionTitle}>Selected Rental Plan</Text>
+            <Text style={styles.sectionTitle}>{t('goals.selectedRentalPlan')}</Text>
             <RentalPlanCard plan={selectedPlan} isSelected={true} />
             
             {goal.status === 'in_progress' && (
@@ -155,7 +184,7 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
                 />
                 
                 <View style={styles.paymentSection}>
-                  <Text style={styles.sectionTitle}>Payment Information</Text>
+                  <Text style={styles.sectionTitle}>{t('goals.paymentInformation')}</Text>
                   
                   {goal.pendingPayment && goal.pendingPayment > 0 ? (
                     <View style={styles.paymentDueContainer}>
@@ -163,12 +192,12 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
                         <Clock size={24} color={theme.colors.warning} />
                       </View>
                       <View style={styles.paymentDueContent}>
-                        <Text style={styles.paymentDueTitle}>Payment Due</Text>
+                        <Text style={styles.paymentDueTitle}>{t('goals.paymentDue')}</Text>
                         <Text style={styles.paymentDueAmount}>
                           ${goal.pendingPayment.toLocaleString()}
                         </Text>
                         <Text style={styles.paymentDueDate}>
-                          Due by: {format(nextPaymentDate, 'MMMM d, yyyy')}
+                          {t('goals.dueBy')}: {format(nextPaymentDate, 'MMMM d, yyyy', { locale: dateLocale })}
                         </Text>
                         <TouchableOpacity 
                           style={styles.makePaymentButton}
@@ -176,7 +205,7 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
                         >
                           <CreditCard size={16} color="#FFFFFF" />
                           <Text style={styles.makePaymentButtonText}>
-                            Make Payment
+                            {t('goals.makePayment')}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -184,10 +213,10 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
                   ) : (
                     <View style={styles.noPaymentDueContainer}>
                       <Text style={styles.noPaymentDueText}>
-                        No pending payments at this time.
+                        {t('goals.noPendingPayments')}
                       </Text>
                       <Text style={styles.nextPaymentText}>
-                        {t('goals.nextPaymentDue')} {format(nextPaymentDate, 'MMMM d, yyyy')}
+                        {t('goals.nextPaymentDue')} {format(nextPaymentDate, 'MMMM d, yyyy', { locale: dateLocale })}
                       </Text>
                     </View>
                   )}
@@ -208,7 +237,7 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
                     <View style={styles.paymentEntryContent}>
                       <Text style={styles.paymentEntryTitle}>{t('goals.paymentCompleted')}</Text>
                       <Text style={styles.paymentEntryDate}>
-                        {format(new Date(new Date().setMonth(new Date().getMonth() - 1)), 'MMMM d, yyyy')}
+                        {format(new Date(new Date().setMonth(new Date().getMonth() - 1)), 'MMMM d, yyyy', { locale: dateLocale })}
                       </Text>
                     </View>
                     <Text style={styles.paymentEntryAmount}>
@@ -223,7 +252,7 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
                     <View style={styles.paymentEntryContent}>
                       <Text style={styles.paymentEntryTitle}>{t('goals.paymentCompleted')}</Text>
                       <Text style={styles.paymentEntryDate}>
-                        {format(new Date(new Date().setMonth(new Date().getMonth() - 2)), 'MMMM d, yyyy')}
+                        {format(new Date(new Date().setMonth(new Date().getMonth() - 2)), 'MMMM d, yyyy', { locale: dateLocale })}
                       </Text>
                     </View>
                     <Text style={styles.paymentEntryAmount}>
@@ -241,23 +270,23 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
             <View style={styles.completionIconContainer}>
               <Award size={40} color="#FFFFFF" />
             </View>
-            <Text style={styles.completionTitle}>Goal Achieved!</Text>
+            <Text style={styles.completionTitle}>{t('goals.goalAchieved')}</Text>
             <Text style={styles.completionText}>
-              Congratulations! You have successfully achieved your financial goal.
+              {t('goals.goalAchievedMessage')}
             </Text>
             
             <View style={styles.completionDetails}>
               <View style={styles.completionDetail}>
-                <Text style={styles.completionDetailLabel}>Start Date</Text>
+                <Text style={styles.completionDetailLabel}>{t('goals.startDate')}</Text>
                 <Text style={styles.completionDetailValue}>
-                  {format(new Date(new Date().setMonth(new Date().getMonth() - 24)), 'MMM d, yyyy')}
+                  {format(new Date(new Date().setMonth(new Date().getMonth() - 24)), 'MMM d, yyyy', { locale: dateLocale })}
                 </Text>
               </View>
               <View style={styles.completionDetailDivider} />
               <View style={styles.completionDetail}>
-                <Text style={styles.completionDetailLabel}>Completion Date</Text>
+                <Text style={styles.completionDetailLabel}>{t('goals.completionDate')}</Text>
                 <Text style={styles.completionDetailValue}>
-                  {format(new Date(), 'MMM d, yyyy')}
+                  {format(new Date(), 'MMM d, yyyy', { locale: dateLocale })}
                 </Text>
               </View>
             </View>

@@ -30,12 +30,12 @@ export const useGoalStore = create<GoalStore>((set) => ({
           monthlyContribution: 3000,
           achievementDate: new Date('2028-01-15').toISOString(),
           strengths: [
-            'Meets the goal earlier than the target date',
-            'Higher returns on investment'
+            'goals.strengths.betterTimeline',
+            'goals.strengths.betterReturns'
           ],
           weaknesses: [
-            'High monthly payment may strain finances',
-            'Less flexibility for other expenses'
+            'goals.weaknesses.strainFinances',
+            'goals.weaknesses.lessForExpenses'
           ]
         },
         {
@@ -46,12 +46,12 @@ export const useGoalStore = create<GoalStore>((set) => ({
           monthlyContribution: 2500,
           achievementDate: new Date('2029-03-15').toISOString(),
           strengths: [
-            'More affordable monthly payments',
-            'Compatible with current cash flow'
+            'goals.strengths.affordableContribution',
+            'goals.strengths.cashFlowFriendly'
           ],
           weaknesses: [
-            'Takes longer to achieve the goal',
-            'Slightly lower total returns'
+            'goals.weaknesses.longerToAchieve',
+            'goals.weaknesses.lowerReturns'
           ]
         }
       ]
@@ -73,8 +73,13 @@ export const useGoalStore = create<GoalStore>((set) => ({
           rentPeriod: 4,
           monthlyContribution: 2800,
           achievementDate: new Date('2026-08-10').toISOString(),
-          strengths: ['Completes goal ahead of schedule', 'Higher overall returns'],
-          weaknesses: ['Higher monthly financial commitment']
+          strengths: [
+            'goals.strengths.quickAchievement', 
+            'goals.strengths.betterReturns'
+          ],
+          weaknesses: [
+            'goals.weaknesses.higherCommitment'
+          ]
         },
         {
           id: 'plan-2-b',
@@ -83,8 +88,13 @@ export const useGoalStore = create<GoalStore>((set) => ({
           rentPeriod: 4,
           monthlyContribution: 2200,
           achievementDate: new Date('2027-05-10').toISOString(),
-          strengths: ['More manageable monthly payments', 'Good balance of time and contribution'],
-          weaknesses: ['Slightly delayed completion compared to Plan A']
+          strengths: [
+            'goals.strengths.affordableContribution', 
+            'goals.strengths.goodBalance'
+          ],
+          weaknesses: [
+            'goals.weaknesses.delayedCompletion'
+          ]
         }
       ],
       selectedPlan: 'plan-2-a',
@@ -152,8 +162,13 @@ export const useGoalStore = create<GoalStore>((set) => ({
           rentPeriod: 1,
           monthlyContribution: 800,
           achievementDate: new Date('2025-12-20').toISOString(),
-          strengths: ['Quick achievement of travel goal', 'Can plan trip earlier'],
-          weaknesses: ['Higher monthly commitment']
+          strengths: [
+            'goals.strengths.quickAchievement', 
+            'goals.strengths.earlierPlanning'
+          ],
+          weaknesses: [
+            'goals.weaknesses.higherCommitment'
+          ]
         },
         {
           id: 'plan-4-b',
@@ -162,8 +177,13 @@ export const useGoalStore = create<GoalStore>((set) => ({
           rentPeriod: 1,
           monthlyContribution: 600,
           achievementDate: new Date('2026-05-20').toISOString(),
-          strengths: ['Lower monthly payments', 'More flexibility with budget'],
-          weaknesses: ['Slightly delayed trip planning']
+          strengths: [
+            'goals.strengths.affordableContribution', 
+            'goals.strengths.moreBudgetFlexibility'
+          ],
+          weaknesses: [
+            'goals.weaknesses.delayedPlanning'
+          ]
         }
       ],
       selectedPlan: 'plan-4-a',

@@ -14,6 +14,7 @@ import { Goal } from '@/types/goals';
 import { useGoalStore } from '@/store/goalStore';
 import { useTranslation } from '@/localization/i18n';
 import { format } from 'date-fns';
+import { es, enUS } from 'date-fns/locale';
 
 interface PaymentModalProps {
   visible: boolean;
@@ -26,11 +27,14 @@ export default function PaymentModal({
   onClose, 
   goal 
 }: PaymentModalProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const { makePayment } = useGoalStore();
   const [amount, setAmount] = useState(goal.pendingPayment?.toString() || '0');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'receipt'>('card');
   const [paymentComplete, setPaymentComplete] = useState(false);
+  
+  // Set date locale based on current language
+  const dateLocale = language === 'es' ? es : enUS;
   
   const handleAmountChange = (text: string) => {
     // Remove non-numeric characters
@@ -41,7 +45,7 @@ export default function PaymentModal({
   const handlePayment = () => {
     const paymentAmount = parseFloat(amount);
     if (isNaN(paymentAmount) || paymentAmount <= 0) {
-      Alert.alert("Invalid Amount", "Please enter a valid payment amount");
+      Alert.alert(t('payment.invalidAmount'), t('payment.enterValidAmount'));
       return;
     }
     
@@ -59,8 +63,8 @@ export default function PaymentModal({
   const handleGenerateReceipt = () => {
     // In a real app, this would generate a PDF receipt
     Alert.alert(
-      "Receipt Generated", 
-      "Your payment receipt has been generated and sent to your email."
+      t('payment.receiptGenerated'), 
+      t('payment.receiptSentToEmail')
     );
     onClose();
   };
@@ -82,13 +86,13 @@ export default function PaymentModal({
               <View style={styles.successIconContainer}>
                 <Check size={40} color="#FFFFFF" />
               </View>
-              <Text style={styles.successTitle}>Payment Successful!</Text>
-              <Text style={styles.successText}>Thank you for your contribution.</Text>
+              <Text style={styles.successTitle}>{t('payment.successful')}</Text>
+              <Text style={styles.successText}>{t('payment.thankYouContribution')}</Text>
             </View>
           ) : (
             <>
               <View style={styles.modalHeader}>
-                <Text style={styles.modalTitle}>Make Payment</Text>
+                <Text style={styles.modalTitle}>{t('payment.makePayment')}</Text>
                 <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                   <X size={24} color={theme.colors.text.primary} />
                 </TouchableOpacity>
@@ -98,20 +102,20 @@ export default function PaymentModal({
                 <View style={styles.goalInfoContainer}>
                   <Text style={styles.goalTitle}>{goal.title}</Text>
                   <View style={styles.goalRow}>
-                    <Text style={styles.goalInfoLabel}>Monthly Contribution:</Text>
+                    <Text style={styles.goalInfoLabel}>{t('payment.monthlyContribution')}:</Text>
                     <Text style={styles.goalInfoValue}>${selectedPlan?.monthlyContribution.toLocaleString()}</Text>
                   </View>
                   <View style={styles.goalRow}>
-                    <Text style={styles.goalInfoLabel}>Pending Payment:</Text>
+                    <Text style={styles.goalInfoLabel}>{t('payment.pendingPayment')}:</Text>
                     <Text style={[styles.goalInfoValue, styles.pendingValue]}>${goal.pendingPayment?.toLocaleString()}</Text>
                   </View>
                   <View style={styles.goalRow}>
-                    <Text style={styles.goalInfoLabel}>Due Date:</Text>
-                    <Text style={styles.goalInfoValue}>{format(nextPaymentDate, 'MMM d, yyyy')}</Text>
+                    <Text style={styles.goalInfoLabel}>{t('payment.dueDate')}:</Text>
+                    <Text style={styles.goalInfoValue}>{format(nextPaymentDate, 'MMM d, yyyy', { locale: dateLocale })}</Text>
                   </View>
                 </View>
                 
-                <Text style={styles.inputLabel}>Payment Amount</Text>
+                <Text style={styles.inputLabel}>{t('payment.paymentAmount')}</Text>
                 <View style={styles.amountInputContainer}>
                   <Text style={styles.currencySymbol}>$</Text>
                   <TextInput
@@ -123,7 +127,7 @@ export default function PaymentModal({
                   />
                 </View>
                 
-                <Text style={styles.inputLabel}>Payment Method</Text>
+                <Text style={styles.inputLabel}>{t('payment.paymentMethod')}</Text>
                 <View style={styles.paymentMethodContainer}>
                   <TouchableOpacity 
                     style={[
@@ -137,7 +141,7 @@ export default function PaymentModal({
                       styles.paymentMethodText,
                       paymentMethod === 'card' && styles.selectedPaymentMethodText
                     ]}>
-                      Credit/Debit Card
+                      {t('payment.creditDebitCard')}
                     </Text>
                   </TouchableOpacity>
                   
@@ -153,7 +157,7 @@ export default function PaymentModal({
                       styles.paymentMethodText,
                       paymentMethod === 'receipt' && styles.selectedPaymentMethodText
                     ]}>
-                      Generate Receipt
+                      {t('payment.generateReceipt')}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -165,7 +169,7 @@ export default function PaymentModal({
                   onPress={paymentMethod === 'card' ? handlePayment : handleGenerateReceipt}
                 >
                   <Text style={styles.paymentButtonText}>
-                    {paymentMethod === 'card' ? 'Make Payment' : 'Generate Receipt'}
+                    {paymentMethod === 'card' ? t('payment.makePayment') : t('payment.generateReceipt')}
                   </Text>
                 </TouchableOpacity>
               </View>
