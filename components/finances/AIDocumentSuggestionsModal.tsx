@@ -9,16 +9,16 @@ import {
   Dimensions,
 } from 'react-native';
 import { theme } from '@/constants/theme';
-import { X, AlertTriangle, TrendingUp, PieChart, Check, Lightbulb, ArrowRight, FileText, ChevronLeft, MessageCircle } from 'lucide-react-native';
+import { X, AlertTriangle, Check, Lightbulb, ArrowRight, FileText, ChevronLeft } from 'lucide-react-native';
 import { useTranslation } from '@/localization/i18n';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
-import { BarChart, LineChart, PieChart as RNPieChart } from 'react-native-chart-kit';
+import { BarChart } from 'react-native-chart-kit';
 
 interface AIDocumentSuggestionsModalProps {
   visible: boolean;
   onClose: () => void;
-  documentType: 'bank' | 'investment' | 'expense' | 'document';
+  documentType: 'bank' | 'expense' | 'document';
   documentName: string;
 }
 
@@ -30,7 +30,7 @@ export default function AIDocumentSuggestionsModal({
   documentType,
   documentName
 }: AIDocumentSuggestionsModalProps) {
-  const { t, language } = useTranslation();
+  const { t } = useTranslation();
   const [selectedSuggestion, setSelectedSuggestion] = useState(-1);
   const [showPreview, setShowPreview] = useState(false);
   const [currentPreview, setCurrentPreview] = useState<number | null>(null);
@@ -47,36 +47,6 @@ export default function AIDocumentSuggestionsModal({
             actions: [
               t('aiDocumentAnalysis.viewDetailedAnalysis'), 
               t('aiDocumentAnalysis.createSavingsPlan')
-            ]
-          },
-          {
-            title: t('aiDocumentAnalysis.investmentOpportunityTitle'),
-            description: t('aiDocumentAnalysis.investmentOpportunityDesc'),
-            icon: <TrendingUp size={24} color={theme.colors.success} />,
-            actions: [
-              t('aiDocumentAnalysis.viewOptions'), 
-              t('aiDocumentAnalysis.simulateInvestment')
-            ]
-          }
-        ];
-      case 'investment':
-        return [
-          {
-            title: t('aiDocumentAnalysis.diversificationTitle'),
-            description: t('aiDocumentAnalysis.diversificationDesc'),
-            icon: <PieChart size={24} color={theme.colors.primary} />,
-            actions: [
-              t('aiDocumentAnalysis.viewRecommendations'), 
-              t('aiDocumentAnalysis.adjustPortfolio')
-            ]
-          },
-          {
-            title: t('aiDocumentAnalysis.strategyAdjustmentTitle'),
-            description: t('aiDocumentAnalysis.strategyAdjustmentDesc'),
-            icon: <TrendingUp size={24} color={theme.colors.success} />,
-            actions: [
-              t('aiDocumentAnalysis.compareStrategies'), 
-              t('aiDocumentAnalysis.talkWithAdvisor')
             ]
           }
         ];
@@ -121,16 +91,7 @@ export default function AIDocumentSuggestionsModal({
   const handleApplySuggestion = (index: number, actionIndex: number = 0) => {
     setSelectedSuggestion(index);
     
-    if (documentType === 'investment' && index === 1 && actionIndex === 1) {
-      onClose();
-      setTimeout(() => {
-        // @ts-ignore - Navegación a la pantalla de chat
-        navigation.navigate('chat');
-      }, 200);
-      return;
-    }
-    
-    // Mostrar simulación/preview para otros casos
+    // Mostrar simulación/preview para los casos
     setCurrentPreview(index);
     setShowPreview(true);
   };
@@ -146,310 +107,67 @@ export default function AIDocumentSuggestionsModal({
 
     switch(documentType) {
       case 'bank':
-        // Optimización de gastos o oportunidad de inversión
-        if (currentPreview === 0) {
-          return (
-            <View style={styles.previewContainer}>
-              <Text style={styles.previewTitle}>{t('aiDocumentAnalysis.expenseOptimizationTitle')}</Text>
-              
-              <Text style={styles.previewSubtitle}>{t('finances.monthlyBreakdown')}</Text>
-              <BarChart
-                data={{
-                  labels: [
-                    t('finances.categories.entertainment'),
-                    t('finances.categories.food'),
-                    t('finances.categories.transport'),
-                    t('finances.categories.utilities'),
-                    t('finances.categories.shopping'),
-                    t('finances.categories.other')
-                  ],
-                  datasets: [{
-                    data: [120, 240, 180, 90, 150, 80]
-                  }]
-                }}
-                width={screenWidth}
-                height={200}
-                yAxisLabel="$"
-                yAxisSuffix=""
-                chartConfig={{
-                  backgroundColor: theme.colors.card,
-                  backgroundGradientFrom: theme.colors.card,
-                  backgroundGradientTo: theme.colors.card,
-                  decimalPlaces: 0,
-                  color: (opacity = 1) => `rgba(0, 102, 204, ${opacity})`,
-                  labelColor: (opacity = 1) => theme.colors.text.secondary,
-                }}
-                style={styles.chart}
-                fromZero
-                showValuesOnTopOfBars
-              />
-              
-              <View style={styles.savingOpportunityContainer}>
-                <Text style={styles.savingLabel}>{t('aiDocumentAnalysis.potentialSavingsLabel')}</Text>
-                <View style={styles.savingItems}>
-                  <View style={styles.savingItem}>
-                    <Text style={styles.savingCategory}>{t('finances.categories.entertainment')}</Text>
-                    <Text style={styles.savingAmount}>-$40/{t('finances.period.month')}</Text>
-                  </View>
-                  <View style={styles.savingItem}>
-                    <Text style={styles.savingCategory}>{t('finances.categories.eatingOut')}</Text>
-                    <Text style={styles.savingAmount}>-$120/{t('finances.period.month')}</Text>
-                  </View>
-                  <View style={styles.savingItem}>
-                    <Text style={styles.savingCategory}>{t('finances.categories.subscriptions')}</Text>
-                    <Text style={styles.savingAmount}>-$35/{t('finances.period.month')}</Text>
-                  </View>
-                  <View style={[styles.savingItem, styles.totalSaving]}>
-                    <Text style={styles.totalSavingText}>{t('aiDocumentAnalysis.totalPotentialSavings')}</Text>
-                    <Text style={styles.totalSavingAmount}>$195/{t('finances.period.month')}</Text>
-                  </View>
+        // Optimización de gastos
+        return (
+          <View style={styles.previewContainer}>
+            <Text style={styles.previewTitle}>{t('aiDocumentAnalysis.expenseOptimizationTitle')}</Text>
+            
+            <Text style={styles.previewSubtitle}>{t('finances.monthlyBreakdown')}</Text>
+            <BarChart
+              data={{
+                labels: [
+                  t('finances.categories.entertainment'),
+                  t('finances.categories.food'),
+                  t('finances.categories.transport'),
+                  t('finances.categories.utilities'),
+                  t('finances.categories.shopping'),
+                  t('finances.categories.other')
+                ],
+                datasets: [{
+                  data: [120, 240, 180, 90, 150, 80]
+                }]
+              }}
+              width={screenWidth}
+              height={200}
+              yAxisLabel="$"
+              yAxisSuffix=""
+              chartConfig={{
+                backgroundColor: theme.colors.card,
+                backgroundGradientFrom: theme.colors.card,
+                backgroundGradientTo: theme.colors.card,
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(0, 102, 204, ${opacity})`,
+                labelColor: (opacity = 1) => theme.colors.text.secondary,
+              }}
+              style={styles.chart}
+              fromZero
+              showValuesOnTopOfBars
+            />
+            
+            <View style={styles.savingOpportunityContainer}>
+              <Text style={styles.savingLabel}>{t('aiDocumentAnalysis.potentialSavingsLabel')}</Text>
+              <View style={styles.savingItems}>
+                <View style={styles.savingItem}>
+                  <Text style={styles.savingCategory}>{t('finances.categories.entertainment')}</Text>
+                  <Text style={styles.savingAmount}>-$40/{t('finances.period.month')}</Text>
+                </View>
+                <View style={styles.savingItem}>
+                  <Text style={styles.savingCategory}>{t('finances.categories.eatingOut')}</Text>
+                  <Text style={styles.savingAmount}>-$120/{t('finances.period.month')}</Text>
+                </View>
+                <View style={styles.savingItem}>
+                  <Text style={styles.savingCategory}>{t('finances.categories.subscriptions')}</Text>
+                  <Text style={styles.savingAmount}>-$35/{t('finances.period.month')}</Text>
+                </View>
+                <View style={[styles.savingItem, styles.totalSaving]}>
+                  <Text style={styles.totalSavingText}>{t('aiDocumentAnalysis.totalPotentialSavings')}</Text>
+                  <Text style={styles.totalSavingAmount}>$195/{t('finances.period.month')}</Text>
                 </View>
               </View>
             </View>
-          );
-        } else {
-          // Oportunidad de inversión
-          return (
-            <View style={styles.previewContainer}>
-              <Text style={styles.previewTitle}>{t('aiDocumentAnalysis.investmentOpportunityTitle')}</Text>
-              
-              <Text style={styles.previewSubtitle}>{t('aiDocumentAnalysis.projectedGrowth')}</Text>
-              <LineChart
-                data={{
-                  labels: [
-                    `1 ${t('finances.period.year')}`, 
-                    `2 ${t('finances.period.years')}`, 
-                    `3 ${t('finances.period.years')}`, 
-                    `4 ${t('finances.period.years')}`, 
-                    `5 ${t('finances.period.years')}`
-                  ],
-                  datasets: [
-                    {
-                      data: [10000, 10420, 10858, 11314, 11789],
-                      color: (opacity = 1) => `rgba(0, 179, 134, ${opacity})`,
-                      strokeWidth: 2
-                    },
-                    {
-                      data: [10000, 10000, 10000, 10000, 10000],
-                      color: (opacity = 1) => `rgba(134, 134, 134, ${opacity})`,
-                      strokeWidth: 2
-                    }
-                  ],
-                  legend: [t('aiDocumentAnalysis.withInvestment'), t('aiDocumentAnalysis.withoutInvestment')]
-                }}
-                width={screenWidth}
-                height={200}
-                yAxisLabel="$"
-                yAxisSuffix=""
-                chartConfig={{
-                  backgroundColor: theme.colors.card,
-                  backgroundGradientFrom: theme.colors.card,
-                  backgroundGradientTo: theme.colors.card,
-                  decimalPlaces: 0,
-                  color: (opacity = 1) => `rgba(0, 102, 204, ${opacity})`,
-                  labelColor: (opacity = 1) => theme.colors.text.secondary,
-                }}
-                style={styles.chart}
-                bezier
-              />
-              
-              <View style={styles.investmentOptionsContainer}>
-                <View style={styles.investmentOption}>
-                  <Text style={styles.investmentTitle}>{t('aiDocumentAnalysis.conservativeOption')}</Text>
-                  <Text style={styles.investmentReturn}>+3.2% {t('aiDocumentAnalysis.annualReturn')}</Text>
-                  <Text style={styles.investmentRisk}>{t('aiDocumentAnalysis.lowRisk')}</Text>
-                </View>
-                
-                <View style={[styles.investmentOption, styles.recommendedOption]}>
-                  <Text style={styles.investmentTitle}>{t('aiDocumentAnalysis.balancedOption')}</Text>
-                  <Text style={styles.investmentReturn}>+4.2% {t('aiDocumentAnalysis.annualReturn')}</Text>
-                  <Text style={styles.investmentRisk}>{t('aiDocumentAnalysis.mediumRisk')}</Text>
-                  <View style={styles.recommendedBadge}>
-                    <Text style={styles.recommendedText}>{t('aiDocumentAnalysis.recommended')}</Text>
-                  </View>
-                </View>
-                
-                <View style={styles.investmentOption}>
-                  <Text style={styles.investmentTitle}>{t('aiDocumentAnalysis.aggressiveOption')}</Text>
-                  <Text style={styles.investmentReturn}>+6.5% {t('aiDocumentAnalysis.annualReturn')}</Text>
-                  <Text style={styles.investmentRisk}>{t('aiDocumentAnalysis.highRisk')}</Text>
-                </View>
-              </View>
-            </View>
-          );
-        }
-      case 'investment':
-        // Diversificación o ajuste de estrategia
-        if (currentPreview === 0) {
-          return (
-            <View style={styles.previewContainer}>
-              <Text style={styles.previewTitle}>{t('aiDocumentAnalysis.diversificationTitle')}</Text>
-              
-              <Text style={styles.previewSubtitle}>{t('aiDocumentAnalysis.currentAllocation')}</Text>
-              <View style={styles.chartContainer}>
-                <RNPieChart
-                  data={[
-                    {
-                      name: t('finances.sectors.tech'),
-                      population: 78,
-                      color: theme.colors.primary,
-                      legendFontColor: theme.colors.text.primary
-                    },
-                    {
-                      name: t('finances.sectors.healthcare'),
-                      population: 12,
-                      color: theme.colors.warning,
-                      legendFontColor: theme.colors.text.primary
-                    },
-                    {
-                      name: t('finances.sectors.finance'),
-                      population: 7,
-                      color: theme.colors.success,
-                      legendFontColor: theme.colors.text.primary
-                    },
-                    {
-                      name: t('finances.sectors.other'),
-                      population: 3,
-                      color: theme.colors.secondary,
-                      legendFontColor: theme.colors.text.primary
-                    }
-                  ]}
-                  width={screenWidth}
-                  height={180}
-                  chartConfig={{
-                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  }}
-                  accessor={"population"}
-                  backgroundColor={"transparent"}
-                  paddingLeft={"15"}
-                  absolute
-                />
-              </View>
-              
-              <Text style={styles.previewSubtitle}>{t('aiDocumentAnalysis.recommendedAllocation')}</Text>
-              <View style={styles.chartContainer}>
-                <RNPieChart
-                  data={[
-                    {
-                      name: t('finances.sectors.tech'),
-                      population: 40,
-                      color: theme.colors.primary,
-                      legendFontColor: theme.colors.text.primary
-                    },
-                    {
-                      name: t('finances.sectors.healthcare'),
-                      population: 25,
-                      color: theme.colors.warning,
-                      legendFontColor: theme.colors.text.primary
-                    },
-                    {
-                      name: t('finances.sectors.finance'),
-                      population: 20,
-                      color: theme.colors.success,
-                      legendFontColor: theme.colors.text.primary
-                    },
-                    {
-                      name: t('finances.sectors.other'),
-                      population: 15,
-                      color: theme.colors.secondary,
-                      legendFontColor: theme.colors.text.primary
-                    }
-                  ]}
-                  width={screenWidth}
-                  height={180}
-                  chartConfig={{
-                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  }}
-                  accessor={"population"}
-                  backgroundColor={"transparent"}
-                  paddingLeft={"15"}
-                  absolute
-                />
-              </View>
-              
-              <View style={styles.benefitsContainer}>
-                <Text style={styles.benefitsTitle}>{t('aiDocumentAnalysis.diversificationBenefits')}</Text>
-                <View style={styles.benefitItem}>
-                  <Check size={16} color={theme.colors.success} />
-                  <Text style={styles.benefitText}>{t('aiDocumentAnalysis.reducedRisk')}</Text>
-                </View>
-                <View style={styles.benefitItem}>
-                  <Check size={16} color={theme.colors.success} />
-                  <Text style={styles.benefitText}>{t('aiDocumentAnalysis.moreSustainableReturns')}</Text>
-                </View>
-                <View style={styles.benefitItem}>
-                  <Check size={16} color={theme.colors.success} />
-                  <Text style={styles.benefitText}>{t('aiDocumentAnalysis.betterMarketDownsideProtection')}</Text>
-                </View>
-              </View>
-            </View>
-          );
-        } else {
-          // Ajuste de estrategia
-          return (
-            <View style={styles.previewContainer}>
-              <Text style={styles.previewTitle}>{t('aiDocumentAnalysis.strategyAdjustmentTitle')}</Text>
-              
-              <View style={styles.strategyComparisonContainer}>
-                <View style={styles.strategyCard}>
-                  <Text style={styles.strategyTitle}>{t('aiDocumentAnalysis.currentStrategy')}</Text>
-                  <View style={styles.strategyDetail}>
-                    <Text style={styles.strategyLabel}>{t('aiDocumentAnalysis.annualReturn')}</Text>
-                    <Text style={styles.strategyValue}>5.2%</Text>
-                  </View>
-                  <View style={styles.strategyDetail}>
-                    <Text style={styles.strategyLabel}>{t('aiDocumentAnalysis.riskLevel')}</Text>
-                    <Text style={styles.strategyValue}>{t('aiDocumentAnalysis.highRisk')}</Text>
-                  </View>
-                  <View style={styles.strategyDetail}>
-                    <Text style={styles.strategyLabel}>{t('aiDocumentAnalysis.timeToGoal')}</Text>
-                    <Text style={styles.strategyValue}>12 {t('finances.period.years')}</Text>
-                  </View>
-                </View>
-                
-                <View style={[styles.strategyCard, styles.recommendedStrategyCard]}>
-                  <Text style={styles.strategyTitle}>{t('aiDocumentAnalysis.recommendedStrategy')}</Text>
-                  <View style={styles.recommendedBadge}>
-                    <Text style={styles.recommendedText}>{t('aiDocumentAnalysis.recommended')}</Text>
-                  </View>
-                  <View style={styles.strategyDetail}>
-                    <Text style={styles.strategyLabel}>{t('aiDocumentAnalysis.annualReturn')}</Text>
-                    <Text style={styles.strategyValue}>4.8%</Text>
-                  </View>
-                  <View style={styles.strategyDetail}>
-                    <Text style={styles.strategyLabel}>{t('aiDocumentAnalysis.riskLevel')}</Text>
-                    <Text style={styles.strategyValue}>{t('aiDocumentAnalysis.mediumRisk')}</Text>
-                  </View>
-                  <View style={styles.strategyDetail}>
-                    <Text style={styles.strategyLabel}>{t('aiDocumentAnalysis.timeToGoal')}</Text>
-                    <Text style={styles.strategyValue}>11 {t('finances.period.years')}</Text>
-                  </View>
-                </View>
-              </View>
-              
-              <View style={styles.talkWithAdvisorContainer}>
-                <Text style={styles.talkWithAdvisorText}>
-                  {t('aiDocumentAnalysis.talkWithAdvisorDescription')}
-                </Text>
-                <TouchableOpacity 
-                  style={styles.talkWithAdvisorButton} 
-                  onPress={() => {
-                    onClose();
-                    setTimeout(() => {
-                      // @ts-ignore - Navegación a la pantalla de chat
-                      navigation.navigate('chat');
-                    }, 200);
-                  }}
-                >
-                  <MessageCircle size={18} color="#FFFFFF" />
-                  <Text style={styles.talkWithAdvisorButtonText}>
-                    {t('aiDocumentAnalysis.talkWithAdvisor')}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          );
-        }
+          </View>
+        );
+        
       case 'expense':
         // Categorización automática o reclamación potencial
         if (currentPreview === 0) {
@@ -653,7 +371,6 @@ export default function AIDocumentSuggestionsModal({
                     <Text style={styles.aiSummaryTitle}>{t('aiDocumentAnalysis.aiSummary')}</Text>
                     <Text style={styles.aiSummaryText}>
                       {documentType === 'bank' && t('aiDocumentAnalysis.bankAnalysisSummary')}
-                      {documentType === 'investment' && t('aiDocumentAnalysis.investmentAnalysisSummary')}
                       {documentType === 'expense' && t('aiDocumentAnalysis.expenseAnalysisSummary')}
                       {documentType === 'document' && t('aiDocumentAnalysis.documentAnalysisSummary')}
                     </Text>
@@ -959,57 +676,6 @@ const styles = StyleSheet.create({
     fontFamily: theme.typography.fontFamily.bold,
     fontSize: theme.typography.fontSize.md,
     color: theme.colors.success,
-  },
-  investmentOptionsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: theme.spacing.lg,
-  },
-  investmentOption: {
-    flex: 1,
-    backgroundColor: theme.colors.card,
-    borderRadius: theme.borderRadius.medium,
-    padding: theme.spacing.md,
-    marginHorizontal: 4,
-    ...theme.shadows.small,
-    alignItems: 'center',
-    position: 'relative',
-  },
-  recommendedOption: {
-    borderColor: theme.colors.primary,
-    borderWidth: 2,
-  },
-  investmentTitle: {
-    fontFamily: theme.typography.fontFamily.semiBold,
-    fontSize: theme.typography.fontSize.sm,
-    color: theme.colors.text.primary,
-    marginBottom: 4,
-    textAlign: 'center',
-  },
-  investmentReturn: {
-    fontFamily: theme.typography.fontFamily.bold,
-    fontSize: theme.typography.fontSize.md,
-    color: theme.colors.success,
-    marginTop: 4,
-  },
-  investmentRisk: {
-    fontFamily: theme.typography.fontFamily.regular,
-    fontSize: theme.typography.fontSize.xs,
-    color: theme.colors.text.secondary,
-    marginTop: 4,
-  },
-  recommendedBadge: {
-    position: 'absolute',
-    top: -10,
-    backgroundColor: theme.colors.primary,
-    paddingHorizontal: theme.spacing.sm,
-    paddingVertical: 2,
-    borderRadius: theme.borderRadius.small,
-  },
-  recommendedText: {
-    fontFamily: theme.typography.fontFamily.medium,
-    fontSize: theme.typography.fontSize.xs,
-    color: '#FFFFFF',
   },
   benefitsContainer: {
     marginTop: theme.spacing.lg,

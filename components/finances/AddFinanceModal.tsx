@@ -37,7 +37,7 @@ export default function AddFinanceModal({ visible, onClose }: AddFinanceModalPro
   const { addFinance } = useFinanceStore();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState<'bank' | 'investment' | 'expense' | 'document'>('bank');
+  const [category, setCategory] = useState<'bank' | 'expense' | 'document'>('bank');
 
   const [isFileSelected, setIsFileSelected] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState('');
@@ -63,9 +63,8 @@ export default function AddFinanceModal({ visible, onClose }: AddFinanceModalPro
     opacity: documentOpacity.value
   }));
   
-  const categories: { key: 'bank' | 'investment' | 'expense' | 'document'; label: string }[] = [
+  const categories: { key: 'bank' | 'expense' | 'document'; label: string }[] = [
     { key: 'bank', label: t('finances.bankStatement') },
-    { key: 'investment', label: t('finances.investment') },
     { key: 'expense', label: t('finances.expense') },
     { key: 'document', label: t('finances.document') },
   ];
