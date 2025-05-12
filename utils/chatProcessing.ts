@@ -75,12 +75,13 @@ export const processMessage = async (
     // Create goal object
     const newGoal: Goal = {
       id: Date.now().toString(),
-      title,
+      titleKey: 'goals.titles.buyHouse',
       amount,
       targetDate: new Date(year, 11, 31).toISOString(),
       priority: 'medium',
       progress: 0,
-      description: '',
+      descriptionKey: 'goals.descriptions.buyHouse',
+      status: 'in_progress',
     };
     
     // Generate response based on language
