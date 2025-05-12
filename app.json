@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "renta-viva",
-    "slug": "renta-viva",
+    "name": "Renta Viva",
+    "slug": "Renta Viva",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,8 +12,8 @@
       "supportsTablet": true
     },
     "web": {
-      "name": "renta-viva",
-      "slug": "renta-viva",
+      "name": "Renta Viva",
+      "slug": "Renta Viva",
       "bundler": "metro",
       "output": "single",
       "favicon": "./assets/images/favicon.png"
