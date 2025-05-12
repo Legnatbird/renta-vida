@@ -145,16 +145,21 @@ export default function GoalCard({ goal, onPress }: GoalCardProps) {
           <View style={styles.progressContainer}>
             <View style={styles.progressInfo}>
               <Text style={styles.progressText}>{t('home.progress')}: {goal.progress}%</Text>
-              {goal.status === 'in_progress' && selectedPlan && (
+              
+              {/* Don't show monthly payments for completed goals */}
+              {goal.status === 'completed' ? (
+                <Text style={[styles.savingsText, { color: theme.colors.success }]}>
+                  {t('goals.complete')}
+                </Text>
+              ) : goal.status === 'in_progress' && selectedPlan ? (
                 <Text style={styles.savingsText}>
                   ${selectedPlan.monthlyContribution.toLocaleString()}/{t('goals.month')}
                 </Text>
-              )}
-              {(goal.status === 'configuration' || !selectedPlan) && (
+              ) : (goal.status === 'configuration' || !selectedPlan) && monthlySavingsNeeded > 0 ? (
                 <Text style={styles.savingsText}>
                   ${monthlySavingsNeeded.toFixed(0)}{t('timeline.monthlyNeeded')}
                 </Text>
-              )}
+              ) : null}
             </View>
             <View style={styles.progressBarContainer}>
               <View 
@@ -167,39 +172,57 @@ export default function GoalCard({ goal, onPress }: GoalCardProps) {
             </View>
           </View>
           
-          {/* Action buttons based on goal status */}
-          {goal.status === 'configuration' && (
-            <TouchableOpacity 
-              style={styles.actionButton}
-              onPress={handlePlanSelection}
-            >
-              <Text style={styles.actionButtonText}>{t('goals.selectRentalPlan')}</Text>
-              <ArrowRight size={16} color={theme.colors.primary} />
-            </TouchableOpacity>
-          )}
-          
-          {goal.status === 'in_progress' && goal.pendingPayment && goal.pendingPayment > 0 && (
-            <TouchableOpacity 
-              style={[styles.actionButton, styles.paymentButton]}
-              onPress={handlePayment}
-            >
-              <Text style={[styles.actionButtonText, styles.paymentButtonText]}>
-                {t('payment.makePayment')} (${goal.pendingPayment.toLocaleString()})
-              </Text>
-              <CreditCard size={16} color="#FFFFFF" />
-            </TouchableOpacity>
-          )}
-          
-          {goal.status === 'in_progress' && selectedPlan && (
-            <View style={styles.planInfo}>
-              <Text style={styles.planTitle}>
-                {selectedPlan.name.split(':')[0]}
-              </Text>
-              <Text style={styles.planDetail}>
-                {t('goals.achievement')}: {format(new Date(selectedPlan.achievementDate), 'MMM yyyy')}
-              </Text>
-            </View>
-          )}
+          {/* Action buttons and plan info - wrap in fragment to avoid stray renders */}
+          <>
+            {/* Only show Configuration button for configuration status */}
+            {goal.status === 'configuration' && (
+              <TouchableOpacity 
+                style={styles.actionButton}
+                onPress={handlePlanSelection}
+              >
+                <Text style={styles.actionButtonText}>{t('goals.selectRentalPlan')}</Text>
+                <ArrowRight size={16} color={theme.colors.primary} />
+              </TouchableOpacity>
+            )}
+            
+            {/* Only show Payment button when there is a positive pending payment amount */}
+            {goal.status === 'in_progress' && goal.pendingPayment && goal.pendingPayment > 0 ? (
+              <TouchableOpacity 
+                style={[styles.actionButton, styles.paymentButton]}
+                onPress={handlePayment}
+              >
+                <Text style={[styles.actionButtonText, styles.paymentButtonText]}>
+                  {t('payment.makePayment')} (${goal.pendingPayment.toLocaleString()})
+                </Text>
+                <CreditCard size={16} color="#FFFFFF" />
+              </TouchableOpacity>
+            ) : null}
+            
+            {/* Plan info section - only show for in_progress with selected plan and NO pending payment */}
+            {goal.status === 'in_progress' && selectedPlan && 
+             (!goal.pendingPayment || goal.pendingPayment <= 0) ? (
+              <View style={styles.planInfo}>
+                <Text style={styles.planTitle}>
+                  {selectedPlan.name.split(':')[0]}
+                </Text>
+                <Text style={styles.planDetail}>
+                  {t('goals.achievement')}: {format(new Date(selectedPlan.achievementDate), 'MMM yyyy')}
+                </Text>
+              </View>
+            ) : null}
+            
+            {/* Show plan info for completed goals in a different style */}
+            {goal.status === 'completed' && selectedPlan ? (
+              <View style={[styles.planInfo, styles.completedPlanInfo]}>
+                <Text style={[styles.planTitle, {color: theme.colors.success}]}>
+                  {t('goals.goalAchieved')}
+                </Text>
+                <Text style={styles.planDetail}>
+                  {t('goals.completionDate')}: {format(new Date(), 'MMM yyyy')}
+                </Text>
+              </View>
+            ) : null}
+          </>
         </View>
       </TouchableOpacity>
       
@@ -268,6 +291,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.typography.fontFamily.medium,
     fontSize: theme.typography.fontSize.xs,
     marginLeft: 4,
+    color: theme.colors.text.secondary,
   },
   date: {
     fontFamily: theme.typography.fontFamily.regular,
@@ -362,5 +386,9 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSize.xs,
     color: theme.colors.text.secondary,
     marginTop: 2,
+  },
+  completedPlanInfo: {
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+    borderLeftColor: theme.colors.success,
   },
 });

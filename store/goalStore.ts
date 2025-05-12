@@ -7,10 +7,10 @@ interface GoalStore {
   updateGoal: (id: string, updatedGoal: Partial<Goal>) => void;
   removeGoal: (id: string) => void;
   selectPlan: (goalId: string, planId: string) => void;
-  makePayment: (goalId: string, amount: number) => void;
+  makePayment: (goalId: string, amount: number) => { goalCompleted: boolean };
 }
 
-export const useGoalStore = create<GoalStore>((set) => ({
+export const useGoalStore = create<GoalStore>((set, get) => ({
   goals: [
     {
       id: '1',
@@ -215,29 +215,67 @@ export const useGoalStore = create<GoalStore>((set) => ({
         : goal
     ),
   })),
-  makePayment: (goalId, amount) => set((state) => ({
-    goals: state.goals.map((goal) => {
-      if (goal.id === goalId) {
-        const pendingPayment = (goal.pendingPayment || 0) - amount;
-        // Update progress based on payment
-        const selectedPlan = goal.plans?.find(plan => plan.id === goal.selectedPlan);
-        const totalContributions = selectedPlan ? selectedPlan.monthlyContribution * (selectedPlan.rentPeriod * 12) : goal.amount;
-        const currentContributions = totalContributions - (pendingPayment > 0 ? pendingPayment : 0);
-        const newProgress = Math.min(100, Math.round((currentContributions / totalContributions) * 100));
-        
-        return { 
-          ...goal, 
-          pendingPayment: pendingPayment > 0 ? pendingPayment : 0,
-          progress: newProgress,
-          // Set next payment date 1 month later if payment is complete
-          nextPaymentDate: pendingPayment <= 0 ? 
-            new Date(new Date(goal.nextPaymentDate || "").setMonth(new Date(goal.nextPaymentDate || "").getMonth() + 1)).toISOString() 
-            : goal.nextPaymentDate,
-          // Set status to completed if progress reaches 100%
-          status: newProgress >= 100 ? 'completed' : 'in_progress'
-        };
-      }
-      return goal;
-    }),
-  })),
+  makePayment: (goalId, amount) => {
+    let goalCompleted = false;
+    
+    set((state) => {
+      const updatedGoals = state.goals.map((goal) => {
+        if (goal.id === goalId) {
+          // Handle pending payment for the month
+          const pendingPayment = Math.max(0, (goal.pendingPayment || 0) - amount);
+          
+          // Get the selected plan
+          const selectedPlan = goal.plans?.find(plan => plan.id === goal.selectedPlan);
+          
+          // Calculate total amount needed for the goal
+          const totalGoalAmount = goal.amount;
+          
+          // Calculate accumulated amount so far based on progress
+          let accumulatedAmount = (goal.progress / 100) * totalGoalAmount;
+          
+          // Add the current payment to the accumulated amount
+          accumulatedAmount += amount;
+          
+          // Calculate new progress as a percentage of total goal
+          const newProgress = Math.min(100, Math.round((accumulatedAmount / totalGoalAmount) * 100));
+          
+          // Check if goal is now completed
+          goalCompleted = newProgress >= 100;
+          
+          // Explicitly type the status as a valid GoalStatus
+          const newStatus: 'completed' | 'in_progress' = goalCompleted ? 'completed' : 'in_progress';
+          
+          // Calculate new next payment date - always use a valid date (current date if no existing date)
+          const nextPaymentDateObj = pendingPayment <= 0 
+            ? new Date(goal.nextPaymentDate || new Date().toISOString())
+            : new Date(goal.nextPaymentDate || new Date().toISOString());
+            
+          // Set next payment to one month later if monthly payment is complete
+          if (pendingPayment <= 0) {
+            nextPaymentDateObj.setMonth(nextPaymentDateObj.getMonth() + 1);
+          }
+          
+          // If goal is completed, set pending payment to null instead of 0
+          // This prevents UI from showing "0" for completed goals
+          const finalPendingPayment = goalCompleted ? null : pendingPayment;
+          
+          return { 
+            ...goal, 
+            pendingPayment: finalPendingPayment,
+            progress: newProgress,
+            // Use the calculated next payment date
+            nextPaymentDate: pendingPayment <= 0 ? nextPaymentDateObj.toISOString() : goal.nextPaymentDate,
+            // Set status to completed if progress reaches 100%
+            status: newStatus
+          };
+        }
+        return goal;
+      });
+      
+      // Return in format that Zustand expects
+      return { goals: updatedGoals as Goal[] };
+    });
+    
+    return { goalCompleted };
+  },
 }));

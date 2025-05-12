@@ -86,6 +86,14 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
     }
   };
   
+  // Function to properly format progress display
+  const getProgressDisplay = () => {
+    if (goal.status === 'completed') {
+      return `100% ${t('goals.complete')}`;
+    }
+    return `${goal.progress}% ${t('goals.complete')}`;
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -120,7 +128,7 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
               ]} 
             />
           </View>
-          <Text style={styles.progressText}>{goal.progress}% {t('goals.complete')}</Text>
+          <Text style={styles.progressText}>{getProgressDisplay()}</Text>
         </View>
         
         <View style={styles.infoSection}>
@@ -215,9 +223,11 @@ export default function GoalDetailScreen({ goal, onBack }: GoalDetailScreenProps
                       <Text style={styles.noPaymentDueText}>
                         {t('goals.noPendingPayments')}
                       </Text>
-                      <Text style={styles.nextPaymentText}>
-                        {t('goals.nextPaymentDue')} {format(nextPaymentDate, 'MMMM d, yyyy', { locale: dateLocale })}
-                      </Text>
+                      {goal.status === 'in_progress' && (
+                        <Text style={styles.nextPaymentText}>
+                          {t('goals.nextPaymentDue')} {format(nextPaymentDate, 'MMMM d, yyyy', { locale: dateLocale })}
+                        </Text>
+                      )}
                     </View>
                   )}
                   

@@ -32,6 +32,7 @@ export default function PaymentModal({
   const [amount, setAmount] = useState(goal.pendingPayment?.toString() || '0');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'receipt'>('card');
   const [paymentComplete, setPaymentComplete] = useState(false);
+  const [goalCompleted, setGoalCompleted] = useState(false);
   
   // Set date locale based on current language
   const dateLocale = language === 'es' ? es : enUS;
@@ -49,13 +50,15 @@ export default function PaymentModal({
       return;
     }
     
-    // Process payment
-    makePayment(goal.id, paymentAmount);
+    // Process payment and check if goal was completed
+    const result = makePayment(goal.id, paymentAmount);
+    setGoalCompleted(result.goalCompleted);
     setPaymentComplete(true);
     
     // Reset and close after delay
     setTimeout(() => {
       setPaymentComplete(false);
+      setGoalCompleted(false);
       onClose();
     }, 2000);
   };
@@ -83,11 +86,21 @@ export default function PaymentModal({
         <View style={styles.modalContainer}>
           {paymentComplete ? (
             <View style={styles.successContainer}>
-              <View style={styles.successIconContainer}>
+              <View style={[
+                styles.successIconContainer, 
+                { backgroundColor: goalCompleted ? theme.colors.success : theme.colors.primary }
+              ]}>
                 <Check size={40} color="#FFFFFF" />
               </View>
-              <Text style={styles.successTitle}>{t('payment.successful')}</Text>
-              <Text style={styles.successText}>{t('payment.thankYouContribution')}</Text>
+              <Text style={[
+                styles.successTitle,
+                { color: goalCompleted ? theme.colors.success : theme.colors.primary }
+              ]}>
+                {goalCompleted ? t('goals.goalAchieved') : t('payment.successful')}
+              </Text>
+              <Text style={styles.successText}>
+                {goalCompleted ? t('goals.goalAchievedMessage') : t('payment.thankYouContribution')}
+              </Text>
             </View>
           ) : (
             <>
