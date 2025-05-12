@@ -4,12 +4,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '@/constants/theme';
 import { PieChart } from 'react-native-chart-kit';
 import { LineChart } from 'react-native-chart-kit';
-import { Plus, Wallet, Briefcase, Receipt, FileText, CreditCard, ArrowRight, Percent, Coins, CalendarDays, Clock, ArrowDownUp } from 'lucide-react-native';
+import { Plus, Wallet, Briefcase, Receipt, FileText, CreditCard, ArrowRight, Percent, Coins, CalendarDays, Clock, ArrowDownUp, Mail } from 'lucide-react-native';
 import { useFinanceStore } from '@/store/financeStore';
+import { useInvoiceStore } from '@/store/invoiceStore';
+import { useEmailStore } from '@/store/emailStore';
 import AddFinanceModal from '@/components/finances/AddFinanceModal';
 import { useTranslation } from '@/localization/i18n';
 import AddPaymentMethodModal from '@/components/finances/AddPaymentMethodModal';
 import AutoContributionModal from '@/components/finances/AutoContributionModal';
+import AddEmailModal from '@/components/finances/AddEmailModal';
+import EmailInvoicesModal from '@/components/finances/EmailInvoicesModal';
 
 // Define payment method type
 interface PaymentMethod {
@@ -21,13 +25,27 @@ interface PaymentMethod {
   autoValue: number | null;
 }
 
+// New interface for linked email accounts
+interface LinkedEmail {
+  id: number;
+  email: string;
+  isSync: boolean;
+  lastSync: string;
+}
+
 export default function FinancesScreen() {
   const { t, language } = useTranslation();
   const { finances } = useFinanceStore();
+  const { getInvoicesByEmail } = useInvoiceStore();
+  const { linkedEmails, addEmail } = useEmailStore(); // Usar el store compartido
+  
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isPaymentMethodModalVisible, setIsPaymentMethodModalVisible] = useState(false);
   const [isAutoContributionModalVisible, setIsAutoContributionModalVisible] = useState(false);
+  const [isAddEmailModalVisible, setIsAddEmailModalVisible] = useState(false);
+  const [isInvoicesModalVisible, setIsInvoicesModalVisible] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
+  const [selectedEmail, setSelectedEmail] = useState<string>('');
   
   const chartConfig = {
     backgroundGradientFrom: "#ffffff",
@@ -85,6 +103,21 @@ export default function FinancesScreen() {
     setIsAutoContributionModalVisible(true);
   };
 
+  const handleAddEmail = () => {
+    setIsAddEmailModalVisible(true);
+  };
+
+  const handleConfigureEmailSync = (email: LinkedEmail) => {
+    // Show invoices modal and get invoices for this email
+    setSelectedEmail(email.email);
+    setIsInvoicesModalVisible(true);
+  };
+  
+  const handleAddNewEmail = (email: string) => {
+    // Usar la función del store para añadir el correo
+    addEmail(email);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -128,7 +161,7 @@ export default function FinancesScreen() {
           />
         </View>
 
-        {/* Nueva sección: Métodos de Pago */}
+        {/* Payment Methods Section */}
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>{t('finances.paymentMethods')}</Text>
           <TouchableOpacity onPress={handleAddPaymentMethod}>
@@ -169,7 +202,38 @@ export default function FinancesScreen() {
           ))}
         </View>
         
-        {/* Sección: Configuración de Contribuciones Automáticas */}
+        {/* New Linked Emails Section */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>{t('finances.linkedEmails')}</Text>
+          <TouchableOpacity onPress={handleAddEmail}>
+            <Text style={styles.sectionAction}>{t('finances.addEmail')}</Text>
+          </TouchableOpacity>
+        </View>
+        
+        <View style={styles.paymentMethodsContainer}>
+          {linkedEmails.map(email => (
+            <TouchableOpacity 
+              key={email.id} 
+              style={styles.paymentMethodCard}
+              onPress={() => handleConfigureEmailSync(email)}
+            >
+              <View style={[styles.paymentMethodIconContainer, { backgroundColor: 'rgba(52, 199, 89, 0.1)' }]}>
+                <Mail size={24} color={theme.colors.success} />
+              </View>
+              <View style={styles.paymentMethodInfo}>
+                <Text style={styles.paymentMethodTitle}>{email.email}</Text>
+                <View style={styles.autoContributionBadge}>
+                  <Text style={styles.autoContributionText}>
+                    {t('finances.syncActive')} ({email.lastSync} {t('finances.minutes')} {t('finances.ago')})
+                  </Text>
+                </View>
+              </View>
+              <ArrowRight size={20} color={theme.colors.text.tertiary} />
+            </TouchableOpacity>
+          ))}
+        </View>
+        
+        {/* Auto Contribution Settings Section */}
         <Text style={styles.sectionTitle}>{t('finances.autoContributionSettings')}</Text>
         
         <View style={styles.contributionSettingsContainer}>
@@ -278,6 +342,19 @@ export default function FinancesScreen() {
         visible={isAutoContributionModalVisible}
         onClose={() => setIsAutoContributionModalVisible(false)}
         paymentMethod={selectedMethod}
+      />
+      
+      <AddEmailModal
+        visible={isAddEmailModalVisible}
+        onClose={() => setIsAddEmailModalVisible(false)}
+        onAddEmail={handleAddNewEmail}
+      />
+      
+      <EmailInvoicesModal
+        visible={isInvoicesModalVisible}
+        onClose={() => setIsInvoicesModalVisible(false)}
+        email={selectedEmail}
+        invoices={getInvoicesByEmail(selectedEmail)}
       />
     </SafeAreaView>
   );

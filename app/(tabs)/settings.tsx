@@ -2,12 +2,14 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '@/constants/theme';
-import { User, Bell, Shield, CircleHelp as HelpCircle, Info, LogOut, ChevronRight } from 'lucide-react-native';
+import { User, Bell, Shield, CircleHelp as HelpCircle, Info, LogOut, ChevronRight, Lock } from 'lucide-react-native';
 import { useTranslation } from '@/localization/i18n';
 import LanguageSelector from '@/components/settings/LanguageSelector';
+import { useRouter } from 'expo-router';
 
 export default function SettingsScreen() {
   const { t } = useTranslation();
+  const router = useRouter();
   const [notifications, setNotifications] = React.useState(true);
   const [darkMode, setDarkMode] = React.useState(false);
   
@@ -84,7 +86,13 @@ export default function SettingsScreen() {
                 <TouchableOpacity 
                   key={itemIndex} 
                   style={styles.settingItem}
-                  onPress={() => item.action === 'navigate' && console.log(`Navigate to: ${item.label}`)}
+                  onPress={() => {
+                    if (item.action === 'navigate') {
+                      item.label === t('settings.privacy') 
+                        ? router.push('/(settings)/privacy') 
+                        : console.log(`Navigate to: ${item.label}`);
+                    }
+                  }}
                 >
                   <View style={styles.settingIconContainer}>
                     {item.icon}

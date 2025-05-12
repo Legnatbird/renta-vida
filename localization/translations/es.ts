@@ -131,6 +131,13 @@ export default {
       subscriptions: "Suscripciones",
       taxi: "Taxi"
     },
+    // Categorías de facturas
+    invoiceCategories: {
+      subscriptions: "Suscripciones",
+      shopping: "Compras",
+      transport: "Transporte",
+      utilities: "Servicios públicos"
+    },
     sectors: {
       tech: "Tecnología",
       healthcare: "Salud",
@@ -167,6 +174,45 @@ export default {
     savings: 'Ahorros',
     paymentMethods: "Métodos de pago vinculados",
     addNew: "Añadir nuevo",
+    
+    // New translations for linked email accounts
+    linkedEmails: "Correos electrónicos vinculados",
+    addEmail: "Añadir correo",
+    
+    // Nuevas traducciones para el modal de añadir correo
+    emailAddress: "Dirección de correo electrónico",
+    sendVerificationCode: "Enviar código de verificación",
+    verificationCode: "Código de verificación",
+    verificationCodeSent: "Código enviado a",
+    verifyAndAdd: "Verificar y añadir",
+    emailVerified: "Correo verificado",
+    emailAddedSuccessfully: "¡Correo añadido con éxito!",
+    hasBeenLinked: "ha sido vinculado a tu cuenta",
+    
+    // New translations for invoices modal
+    scannedInvoices: "Facturas Escaneadas",
+    invoicesThisMonth: "Facturas este mes",
+    totalAmount: "Monto total",
+    recentInvoices: "Facturas recientes",
+    viewAllInvoices: "Ver todas las facturas",
+    viewDetails: "Ver detalles",
+    noInvoicesFound: "No se encontraron facturas",
+    invoiceProcessed: "Procesada",
+    invoicePending: "Pendiente",
+    invoiceAnalyzed: "Analizada",
+    
+    autoSync: "Sincronización automática",
+    syncActive: "Sincronización activa",
+    lastSync: "Última sincronización",
+    minutes: "minutos",
+    hours: "horas",
+    days: "días",
+    ago: "atrás",
+    invoiceDetection: "Detección de facturas",
+    autoImport: "Importación automática",
+    emailNotConfigured: "Correo no configurado",
+    configureSync: "Configurar sincronización",
+    
     autoContributionSettings: "Contribuciones automáticas",
     dueDatePriority: "Prioridad por fecha límite",
     dueDateDescription: "Priorizar cuotas con vencimiento más próximo para el pago automático.",
@@ -276,6 +322,26 @@ export default {
     enterValidAmount: "Por favor ingresa un monto de pago válido",
     receiptGenerated: "Recibo Generado",
     receiptSentToEmail: "Tu recibo de pago ha sido generado y enviado a tu correo electrónico."
+  },
+  privacy: {
+    linkedEmails: 'Cuentas de Correo Vinculadas',
+    linkedEmailsDescription: 'Administra las cuentas de correo electrónico vinculadas a tus datos financieros. Estas cuentas se utilizan para importar automáticamente facturas y estados financieros.',
+    noLinkedEmails: 'No hay cuentas de correo vinculadas',
+    unlinkEmailTitle: 'Desvincular Cuenta de Correo',
+    unlinkEmailMessage: '¿Estás seguro de que deseas desvincular esta cuenta de correo? Ya no recibirás el escaneo automático de facturas y actualizaciones financieras de esta cuenta.',
+    cancel: 'Cancelar',
+    confirm: 'Sí, Desvincular',
+    dataPrivacy: 'Privacidad de Datos',
+    dataSharing: 'Compartir Datos',
+    dataSharingDescription: 'Permitir compartir datos anónimos de uso para mejorar el servicio',
+    analyticsCookies: 'Cookies de Análisis',
+    analyticsCookiesDescription: 'Permitir el uso de cookies para analizar el rendimiento de la aplicación',
+    locationTracking: 'Seguimiento de Ubicación',
+    locationTrackingDescription: 'Permitir datos de ubicación para recomendaciones personalizadas',
+    changePassword: 'Cambiar Contraseña',
+    privacyPolicy: 'Ver Política de Privacidad',
+    deleteAccount: 'Eliminar Cuenta',
+    emailUnlinked: 'Correo desvinculado correctamente'
   },
   aiDocumentAnalysis: {
     analyzing: "Analizando documento...",
