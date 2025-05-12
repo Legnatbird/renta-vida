@@ -321,6 +321,8 @@ export default {
     dataPrivacy: 'Data Privacy',
     dataSharing: 'Data Sharing',
     dataSharingDescription: 'Allow sharing anonymous usage data to improve service',
+    emailReadingPermission: 'Email Reading Permission',
+    emailReadingDescription: 'Allow access to read incoming emails to automatically extract statements and invoices',
     analyticsCookies: 'Analytics Cookies',
     analyticsCookiesDescription: 'Allow usage of cookies to analyze app performance',
     locationTracking: 'Location Tracking',

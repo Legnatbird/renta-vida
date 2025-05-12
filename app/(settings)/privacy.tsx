@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '@/constants/theme';
@@ -13,9 +13,10 @@ export default function PrivacyScreen() {
   const { linkedEmails, removeEmail } = useEmailStore();
   
   // Estado para toggle switches
-  const [dataSharing, setDataSharing] = React.useState(true);
-  const [analyticsCookies, setAnalyticsCookies] = React.useState(true);
-  const [locationTracking, setLocationTracking] = React.useState(false);
+  const [dataSharing, setDataSharing] = useState(true);
+  const [analyticsCookies, setAnalyticsCookies] = useState(true);
+  const [locationTracking, setLocationTracking] = useState(false);
+  const [emailReading, setEmailReading] = useState(true);
   
   // Función para desvincular un correo (actualiza el store compartido)
   const handleUnlinkEmail = (emailId: number) => {
@@ -91,6 +92,19 @@ export default function PrivacyScreen() {
             <Switch
               value={dataSharing}
               onValueChange={setDataSharing}
+              trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
+              thumbColor={'#FFFFFF'}
+            />
+          </View>
+          
+          <View style={styles.settingItem}>
+            <View style={styles.settingTextContainer}>
+              <Text style={styles.settingLabel}>{t('privacy.emailReadingPermission')}</Text>
+              <Text style={styles.settingDescription}>{t('privacy.emailReadingDescription')}</Text>
+            </View>
+            <Switch
+              value={emailReading}
+              onValueChange={setEmailReading}
               trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
               thumbColor={'#FFFFFF'}
             />

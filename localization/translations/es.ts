@@ -334,6 +334,8 @@ export default {
     dataPrivacy: 'Privacidad de Datos',
     dataSharing: 'Compartir Datos',
     dataSharingDescription: 'Permitir compartir datos anónimos de uso para mejorar el servicio',
+    emailReadingPermission: 'Permisos de lectura de correos',
+    emailReadingDescription: 'Permitir acceso para leer correos entrantes para extraer automáticamente extractos y facturas',
     analyticsCookies: 'Cookies de Análisis',
     analyticsCookiesDescription: 'Permitir el uso de cookies para analizar el rendimiento de la aplicación',
     locationTracking: 'Seguimiento de Ubicación',
