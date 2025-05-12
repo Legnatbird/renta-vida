@@ -429,6 +429,81 @@ export default {
     addedOn: "Added on",
     categorized: "Categorized",
     indexed: "Indexed",
+  },
+  notifications: {
+    title: 'Notifications',
+    markAllAsRead: 'Mark all as read',
+    clearAll: 'Clear all',
+    noNotifications: 'You have no new notifications',
+    justNow: 'Just now',
+    minutesAgo: '{minutes} minutes ago',
+    hoursAgo: '{hours} hours ago',
+    daysAgo: '{days} days ago',
+    weeksAgo: '{weeks} weeks ago',
+    recentNotifications: 'Recent',
+    earlierNotifications: 'Earlier',
+    filters: {
+      all: 'All',
+      unread: 'Unread',
+      payments: 'Payments',
+      recommendations: 'Recommendations',
+      goals: 'Goals'
+    },
+    tabs: {
+      all: 'All',
+      insurance: 'Insurance',
+      payments: 'Payments',
+      goals: 'Goals'
+    },
+    insuranceRecommendations: 'Insurance Recommendations',
+    paymentAlerts: 'Payment Alerts',
+    goalUpdates: 'Goal Updates',
+    viewDetails: 'View details',
+    makePayment: 'Make payment',
+    viewProgress: 'View progress',
+    viewReceipt: 'View receipt',
+    insuranceTypes: {
+      education: 'Education Insurance',
+      life: 'Life Insurance',
+      personal_accident: 'Personal Accident Insurance',
+      voluntary_pension: 'Voluntary Pension',
+      life_annuity: 'Life Annuity',
+      voluntary_rent: 'Voluntary Rent'
+    },
+    recommendedForYou: 'Recommended for you',
+    basedOn: 'Based on',
+    savingPotential: 'Potential savings',
+    monthlyPayment: 'Monthly payment',
+    dueInDays: 'Due in {days} days',
+    paymentOverdue: 'Payment overdue',
+    congratulations: 'Congratulations',
+    today: 'Today',
+    yesterday: 'Yesterday',
+    // New notification message keys
+    messages: {
+      educationInsurance: 'Based on your financial goals, an education insurance could help you secure your children\'s university education.',
+      paymentDueHouse: 'Your next payment for the "{goalName}" goal is due in {days} days.',
+      lifeInsurance: 'Protect your family with a life insurance that complements your current financial plan.',
+      paymentConfirmed: 'Your payment of ${amount} for "{goalName}" has been successfully processed.',
+      lifeAnnuity: 'Secure a steady income during your retirement with our life annuity insurance.',
+      goalProgress: 'You have completed {percentage}% of your "{goalName}" goal.',
+      personalAccident: 'Protect yourself against unforeseen events with a personal accident insurance that complements your health coverage.',
+      voluntaryPension: 'Complement your mandatory pension and improve your quality of life in retirement.',
+      voluntaryRent: 'Generate additional income through our voluntary rent program.'
+    },
+    titles: {
+      paymentDue: 'Payment Due Soon',
+      paymentConfirmed: 'Payment Confirmed',
+      goalProgress: 'Goal Progress!'
+    },
+    reasons: {
+      educationalGoals: 'You have established educational goals',
+      familyProfile: 'Family profile identified',
+      retirementGoal: 'Retirement goal identified',
+      riskProfile: 'Based on your risk profile',
+      taxOptimization: 'Recommended tax optimization',
+      savingsCapacity: 'Based on your current saving capacity'
+    }
   }
 };
 

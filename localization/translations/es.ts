@@ -443,4 +443,79 @@ export default {
     categorized: "Categorizado",
     indexed: "Indexado",
   },
+  notifications: {
+    title: 'Notificaciones',
+    markAllAsRead: 'Marcar todo como leído',
+    clearAll: 'Borrar todo',
+    noNotifications: 'No tienes notificaciones nuevas',
+    justNow: 'Justo ahora',
+    minutesAgo: 'hace {minutes} minutos',
+    hoursAgo: 'hace {hours} horas',
+    daysAgo: 'hace {days} días',
+    weeksAgo: 'hace {weeks} semanas',
+    recentNotifications: 'Recientes',
+    earlierNotifications: 'Anteriores',
+    filters: {
+      all: 'Todas',
+      unread: 'No leídas',
+      payments: 'Pagos',
+      recommendations: 'Recomendaciones',
+      goals: 'Objetivos'
+    },
+    tabs: {
+      all: 'Todas',
+      insurance: 'Seguros',
+      payments: 'Pagos',
+      goals: 'Objetivos'
+    },
+    insuranceRecommendations: 'Recomendaciones de Seguros',
+    paymentAlerts: 'Alertas de Pago',
+    goalUpdates: 'Actualizaciones de Objetivos',
+    viewDetails: 'Ver detalles',
+    makePayment: 'Realizar pago',
+    viewProgress: 'Ver progreso',
+    viewReceipt: 'Ver recibo',
+    insuranceTypes: {
+      education: 'Seguro Educativo',
+      life: 'Seguro de Vida',
+      personal_accident: 'Seguro de Accidentes Personales',
+      voluntary_pension: 'Pensión Voluntaria',
+      life_annuity: 'Renta Vitalicia',
+      voluntary_rent: 'Rentas Voluntarias'
+    },
+    recommendedForYou: 'Recomendado para ti',
+    basedOn: 'Basado en',
+    savingPotential: 'Ahorro potencial',
+    monthlyPayment: 'Pago mensual',
+    dueInDays: 'Vence en {days} días',
+    paymentOverdue: 'Pago vencido',
+    congratulations: 'Felicitaciones',
+    today: 'Hoy',
+    yesterday: 'Ayer',
+    // New notification message keys
+    messages: {
+      educationInsurance: 'Basado en tus objetivos financieros, un seguro educativo podría ayudarte a asegurar la educación universitaria de tus hijos.',
+      paymentDueHouse: 'Tu próximo pago para el objetivo "{goalName}" vence en {days} días.',
+      lifeInsurance: 'Protege a tu familia con un seguro de vida que complementa tu plan financiero actual.',
+      paymentConfirmed: 'Tu pago de ${amount} para "{goalName}" ha sido procesado exitosamente.',
+      lifeAnnuity: 'Asegura un ingreso constante durante tu jubilación con nuestro seguro de renta vitalicia.',
+      goalProgress: 'Has completado el {percentage}% de tu objetivo "{goalName}".',
+      personalAccident: 'Protégete contra imprevistos con un seguro de accidentes personales que complementa tu cobertura de salud.',
+      voluntaryPension: 'Complementa tu pensión obligatoria y mejora tu calidad de vida en la jubilación.',
+      voluntaryRent: 'Genera ingresos adicionales a través de nuestro programa de rentas voluntarias.'
+    },
+    titles: {
+      paymentDue: 'Pago próximo a vencer',
+      paymentConfirmed: 'Pago Confirmado',
+      goalProgress: '¡Progreso en tu meta!'
+    },
+    reasons: {
+      educationalGoals: 'Tienes metas educativas establecidas',
+      familyProfile: 'Perfil familiar identificado',
+      retirementGoal: 'Meta de jubilación identificada',
+      riskProfile: 'Basado en tu perfil de riesgo',
+      taxOptimization: 'Optimización fiscal recomendada',
+      savingsCapacity: 'Basado en tu capacidad de ahorro actual'
+    }
+  },
 };

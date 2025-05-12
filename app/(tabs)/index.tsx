@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Animated } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { theme } from '@/constants/theme';
 import { format } from 'date-fns';
@@ -10,11 +10,15 @@ import Timeline from '@/components/timeline/Timeline';
 import { useGoalStore } from '@/store/goalStore';
 import SummaryCard from '@/components/home/SummaryCard';
 import { useTranslation } from '@/localization/i18n';
+import { useNotificationStore } from '@/store/notificationStore';
+import NotificationsModal from '@/components/notifications/NotificationsModal';
 
 export default function HomeScreen() {
   const { t } = useTranslation();
   const { goals } = useGoalStore();
+  const { unreadCount } = useNotificationStore();
   const scrollY = useRef(new Animated.Value(0)).current;
+  const [isNotificationsModalVisible, setIsNotificationsModalVisible] = useState(false);
 
   const headerOpacity = scrollY.interpolate({
     inputRange: [0, 100],
@@ -25,15 +29,13 @@ export default function HomeScreen() {
   const currentDate = new Date();
   const formattedDate = format(currentDate, 'EEEE, MMMM d, yyyy');
 
+  const handleNotificationPress = () => {
+    setIsNotificationsModalVisible(true);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
-      <Animated.View style={[
-        styles.headerBackground,
-        { opacity: headerOpacity }
-      ]}>
-        <SafeAreaView edges={['top']} />
-      </Animated.View>
 
       <SafeAreaView edges={['top']} style={styles.safeArea}>
         <Animated.ScrollView
@@ -52,8 +54,18 @@ export default function HomeScreen() {
               </Text>
               <Text style={styles.title}>{t('home.financialTimeline')}</Text>
             </View>
-            <TouchableOpacity style={styles.notificationButton}>
+            <TouchableOpacity 
+              style={styles.notificationButton}
+              onPress={handleNotificationPress}
+            >
               <Bell size={24} color={theme.colors.text.primary} />
+              {unreadCount > 0 && (
+                <View style={styles.notificationBadge}>
+                  <Text style={styles.notificationBadgeText}>
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </Text>
+                </View>
+              )}
             </TouchableOpacity>
           </View>
 
@@ -90,6 +102,11 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </Animated.ScrollView>
       </SafeAreaView>
+
+      <NotificationsModal 
+        visible={isNotificationsModalVisible}
+        onClose={() => setIsNotificationsModalVisible(false)}
+      />
     </View>
   );
 }
@@ -143,6 +160,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     ...theme.shadows.small,
+    position: 'relative',
+  },
+  notificationBadge: {
+    position: 'absolute',
+    top: -5,
+    right: -5,
+    backgroundColor: theme.colors.error,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: theme.colors.background,
+  },
+  notificationBadgeText: {
+    fontFamily: theme.typography.fontFamily.bold,
+    fontSize: 10,
+    color: '#FFFFFF',
   },
   sectionHeader: {
     flexDirection: 'row',
