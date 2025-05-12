@@ -20,12 +20,6 @@ export default function HomeScreen() {
   const scrollY = useRef(new Animated.Value(0)).current;
   const [isNotificationsModalVisible, setIsNotificationsModalVisible] = useState(false);
 
-  const headerOpacity = scrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [0, 1],
-    extrapolate: 'clamp',
-  });
-
   const currentDate = new Date();
   const formattedDate = format(currentDate, 'EEEE, MMMM d, yyyy');
 
@@ -43,7 +37,7 @@ export default function HomeScreen() {
           contentContainerStyle={styles.scrollContent}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
+            { useNativeDriver: false }
           )}
           scrollEventThrottle={16}
         >
