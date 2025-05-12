@@ -35,6 +35,7 @@ export interface Notification {
   paymentAmount?: number;
   paymentDueDate?: string;    // ISO date string
   goalId?: string;
+  savingAmount?: number;
 
   // Action to take when notification is pressed
   action?: NotificationAction;
