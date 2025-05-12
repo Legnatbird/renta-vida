@@ -98,23 +98,17 @@ export default function NotificationsModal({ visible, onClose }: NotificationsMo
                 <Text style={styles.title}>{t('notifications.title')}</Text>
                 <View style={styles.headerActions}>
                   <TouchableOpacity 
-                    style={styles.headerActionButton} 
+                    style={styles.iconButton} 
                     onPress={markAllAsRead}
                   >
                     <Check size={18} color={theme.colors.text.primary} />
-                    <Text style={styles.headerActionText}>
-                      {t('notifications.markAllAsRead')}
-                    </Text>
                   </TouchableOpacity>
                   
                   <TouchableOpacity 
-                    style={styles.headerActionButton} 
+                    style={styles.iconButton} 
                     onPress={clearAll}
                   >
                     <Trash2 size={18} color={theme.colors.text.primary} />
-                    <Text style={styles.headerActionText}>
-                      {t('notifications.clearAll')}
-                    </Text>
                   </TouchableOpacity>
                   
                   <TouchableOpacity 
@@ -204,6 +198,15 @@ const styles = StyleSheet.create({
   },
   headerActionButton: {
     flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: theme.spacing.md,
+  },
+  iconButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: theme.colors.card,
+    justifyContent: 'center',
     alignItems: 'center',
     marginLeft: theme.spacing.md,
   },
