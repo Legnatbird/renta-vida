@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.spacing.lg,
     paddingBottom: theme.spacing.md,
     gap: theme.spacing.sm,
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.xl,
   },
   filterChip: {
     paddingHorizontal: theme.spacing.md,
