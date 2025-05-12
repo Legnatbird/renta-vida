@@ -8,6 +8,7 @@ export const theme = {
     success: '#34C759',
     warning: '#FF9500',
     error: '#FF3B30',
+    danger: '#FF3B30',
     background: '#F8F9FB',
     card: '#FFFFFF',
     text: {

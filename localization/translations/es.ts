@@ -114,6 +114,30 @@ export default {
     configuration: 'En Configuración',
     nextPaymentDue: 'El próximo pago vence el',
     in_progress: 'En Progreso',
+    
+    // New translation keys for goal content
+    titles: {
+      buyHouse: 'Comprar una Casa',
+      education: 'Educación de los Hijos',
+      retirement: 'Jubilación',
+      travel: 'Viaje a Europa',
+    },
+    descriptions: {
+      buyHouse: 'Ahorrar para el pago inicial de una casa en los suburbios',
+      education: 'Fondo universitario para mi hija',
+      retirement: 'Construir un fondo de jubilación',
+      travel: 'Vacaciones de ensueño recorriendo Europa',
+    },
+    plans: {
+      highContribution: 'Plan A: Aporte alto',
+      balancedApproach: 'Plan B: Enfoque equilibrado',
+      fastTrack: 'Plan A: Vía Rápida',
+      steadyPace: 'Plan B: Ritmo Constante',
+      aggressiveGrowth: 'Plan A: Crecimiento Agresivo',
+      conservativeGrowth: 'Plan B: Crecimiento Conservador',
+      rapidSaving: 'Plan A: Ahorro Rápido',
+      gradualSaving: 'Plan B: Ahorro Gradual',
+    },
   },
   finances: {
     add: 'Añadir',

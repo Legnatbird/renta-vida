@@ -8,6 +8,7 @@ import { useTranslation } from '@/localization/i18n';
 import PlanSelectionModal from './PlanSelectionModal';
 import PaymentModal from './PaymentModal';
 import { useRouter } from 'expo-router';
+import { formatDate } from '@/utils/dateFormatters';
 
 interface GoalCardProps {
   goal: Goal;
@@ -15,13 +16,13 @@ interface GoalCardProps {
 }
 
 export default function GoalCard({ goal, onPress }: GoalCardProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [isPlanModalVisible, setIsPlanModalVisible] = useState(false);
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const router = useRouter();
   
   const targetDate = new Date(goal.targetDate);
-  const formattedDate = format(targetDate, 'MMM d, yyyy');
+  const formattedDate = formatDate(targetDate, language as 'en' | 'es', 'MMM d, yyyy');
   
   // Calculate time remaining
   const now = new Date();
@@ -48,7 +49,7 @@ export default function GoalCard({ goal, onPress }: GoalCardProps) {
 
     if (goal.status === 'configuration') {
       return {
-        label: 'In Configuration',
+        label: t('goals.configuration'),
         color: theme.colors.secondary,
         icon: <AlertCircle size={16} color={theme.colors.secondary} />,
       };
@@ -57,7 +58,7 @@ export default function GoalCard({ goal, onPress }: GoalCardProps) {
     if (goal.status === 'in_progress') {
       if (goal.pendingPayment && goal.pendingPayment > 0) {
         return {
-          label: 'Payment Due',
+          label: t('goals.paymentDue'),
           color: theme.colors.warning,
           icon: <CreditCard size={16} color={theme.colors.warning} />,
         };
@@ -116,6 +117,11 @@ export default function GoalCard({ goal, onPress }: GoalCardProps) {
     setIsPaymentModalVisible(true);
   };
   
+  // Translate priority
+  const getPriorityLabel = (priority: 'high' | 'medium' | 'low'): string => {
+    return t(`goals.${priority}Priority`);
+  };
+  
   return (
     <>
       <TouchableOpacity 
@@ -126,7 +132,7 @@ export default function GoalCard({ goal, onPress }: GoalCardProps) {
         
         <View style={styles.content}>
           <View style={styles.header}>
-            <Text style={styles.title}>{goal.title}</Text>
+            <Text style={styles.title}>{t(goal.titleKey)}</Text>
             <View style={styles.statusContainer}>
               {status.icon}
               <Text style={[styles.statusText, { color: status.color }]}>
@@ -138,7 +144,7 @@ export default function GoalCard({ goal, onPress }: GoalCardProps) {
           <Text style={styles.date}>{t('timeline.target')}: {formattedDate}</Text>
           
           <View style={styles.amountContainer}>
-            <Text style={styles.amountLabel}>{t('goals.goalTitle')}:</Text>
+            <Text style={styles.amountLabel}>{t('goals.targetAmount')}:</Text>
             <Text style={styles.amount}>${goal.amount.toLocaleString()}</Text>
           </View>
           
@@ -203,10 +209,10 @@ export default function GoalCard({ goal, onPress }: GoalCardProps) {
              (!goal.pendingPayment || goal.pendingPayment <= 0) ? (
               <View style={styles.planInfo}>
                 <Text style={styles.planTitle}>
-                  {selectedPlan.name.split(':')[0]}
+                  {t(selectedPlan.nameKey).split(':')[0]}
                 </Text>
                 <Text style={styles.planDetail}>
-                  {t('goals.achievement')}: {format(new Date(selectedPlan.achievementDate), 'MMM yyyy')}
+                  {t('goals.achievement')}: {formatDate(new Date(selectedPlan.achievementDate), language as 'en' | 'es', 'MMM yyyy')}
                 </Text>
               </View>
             ) : null}
@@ -218,7 +224,7 @@ export default function GoalCard({ goal, onPress }: GoalCardProps) {
                   {t('goals.goalAchieved')}
                 </Text>
                 <Text style={styles.planDetail}>
-                  {t('goals.completionDate')}: {format(new Date(), 'MMM yyyy')}
+                  {t('goals.completionDate')}: {formatDate(new Date(), language as 'en' | 'es', 'MMM yyyy')}
                 </Text>
               </View>
             ) : null}

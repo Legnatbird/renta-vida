@@ -32,7 +32,7 @@ export default function RentalPlanCard({
       disabled={!onSelect}
     >
       <View style={styles.header}>
-        <Text style={styles.title}>{t(plan.name.startsWith('Plan A') ? 'plans.planA' : 'plans.planB')}</Text>
+        <Text style={styles.title}>{t(plan.nameKey.startsWith('Plan A') ? 'plans.planA' : 'plans.planB')}</Text>
         {isSelected && (
           <View style={styles.selectedBadge}>
             <Text style={styles.selectedBadgeText}>{t('plans.selected')}</Text>

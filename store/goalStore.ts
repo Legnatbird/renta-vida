@@ -14,17 +14,17 @@ export const useGoalStore = create<GoalStore>((set, get) => ({
   goals: [
     {
       id: '1',
-      title: 'Buy a House',
+      titleKey: 'goals.titles.buyHouse',
       amount: 200000,
       targetDate: new Date('2030-06-15').toISOString(),
       priority: 'high',
       progress: 25,
-      description: 'Save for a down payment on a house in the suburbs',
+      descriptionKey: 'goals.descriptions.buyHouse',
       status: 'configuration',
       plans: [
         {
           id: 'plan-1-a',
-          name: 'Plan A: High Contribution',
+          nameKey: 'goals.plans.highContribution',
           monthlyRent: 1500,
           rentPeriod: 5,
           monthlyContribution: 3000,
@@ -40,7 +40,7 @@ export const useGoalStore = create<GoalStore>((set, get) => ({
         },
         {
           id: 'plan-1-b',
-          name: 'Plan B: Balanced Approach',
+          nameKey: 'goals.plans.balancedApproach',
           monthlyRent: 1200,
           rentPeriod: 5,
           monthlyContribution: 2500,
@@ -58,17 +58,17 @@ export const useGoalStore = create<GoalStore>((set, get) => ({
     },
     {
       id: '2',
-      title: 'Child\'s Education',
+      titleKey: 'goals.titles.education',
       amount: 50000,
       targetDate: new Date('2028-01-10').toISOString(),
       priority: 'medium',
       progress: 40,
-      description: 'University fund for my daughter',
+      descriptionKey: 'goals.descriptions.education',
       status: 'in_progress',
       plans: [
         {
           id: 'plan-2-a',
-          name: 'Plan A: Fast Track',
+          nameKey: 'goals.plans.fastTrack',
           monthlyRent: 1200,
           rentPeriod: 4,
           monthlyContribution: 2800,
@@ -83,7 +83,7 @@ export const useGoalStore = create<GoalStore>((set, get) => ({
         },
         {
           id: 'plan-2-b',
-          name: 'Plan B: Steady Pace',
+          nameKey: 'goals.plans.steadyPace',
           monthlyRent: 950,
           rentPeriod: 4,
           monthlyContribution: 2200,
@@ -103,17 +103,17 @@ export const useGoalStore = create<GoalStore>((set, get) => ({
     },
     {
       id: '3',
-      title: 'Retirement',
+      titleKey: 'goals.titles.retirement',
       amount: 500000,
       targetDate: new Date('2045-12-31').toISOString(),
       priority: 'high',
       progress: 15,
-      description: 'Building retirement nest egg',
+      descriptionKey: 'goals.descriptions.retirement',
       status: 'configuration',
       plans: [
         {
           id: 'plan-3-a',
-          name: 'Plan A: Aggressive Growth',
+          nameKey: 'goals.plans.aggressiveGrowth',
           monthlyRent: 3000,
           rentPeriod: 20,
           monthlyContribution: 5000,
@@ -129,7 +129,7 @@ export const useGoalStore = create<GoalStore>((set, get) => ({
         },
         {
           id: 'plan-3-b',
-          name: 'Plan B: Conservative Growth',
+          nameKey: 'goals.plans.conservativeGrowth',
           monthlyRent: 2400,
           rentPeriod: 20,
           monthlyContribution: 4000,
@@ -147,17 +147,17 @@ export const useGoalStore = create<GoalStore>((set, get) => ({
     },
     {
       id: '4',
-      title: 'Travel to Europe',
+      titleKey: 'goals.titles.travel',
       amount: 10000,
       targetDate: new Date('2026-07-20').toISOString(),
       priority: 'low',
       progress: 60,
-      description: 'Dream vacation touring Europe',
+      descriptionKey: 'goals.descriptions.travel',
       status: 'in_progress',
       plans: [
         {
           id: 'plan-4-a',
-          name: 'Plan A: Rapid Saving',
+          nameKey: 'goals.plans.rapidSaving',
           monthlyRent: 500,
           rentPeriod: 1,
           monthlyContribution: 800,
@@ -172,7 +172,7 @@ export const useGoalStore = create<GoalStore>((set, get) => ({
         },
         {
           id: 'plan-4-b',
-          name: 'Plan B: Gradual Saving',
+          nameKey: 'goals.plans.gradualSaving',
           monthlyRent: 350,
           rentPeriod: 1,
           monthlyContribution: 600,

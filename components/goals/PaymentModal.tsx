@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -13,8 +13,7 @@ import { X, CreditCard, Receipt, Check } from 'lucide-react-native';
 import { Goal } from '@/types/goals';
 import { useGoalStore } from '@/store/goalStore';
 import { useTranslation } from '@/localization/i18n';
-import { format } from 'date-fns';
-import { es, enUS } from 'date-fns/locale';
+import { formatDate } from '@/utils/dateFormatters';
 
 interface PaymentModalProps {
   visible: boolean;
@@ -34,8 +33,9 @@ export default function PaymentModal({
   const [paymentComplete, setPaymentComplete] = useState(false);
   const [goalCompleted, setGoalCompleted] = useState(false);
   
-  // Set date locale based on current language
-  const dateLocale = language === 'es' ? es : enUS;
+  const formattedDueDate = goal.nextPaymentDate 
+    ? formatDate(new Date(goal.nextPaymentDate), language as 'en' | 'es', 'MMM d, yyyy')
+    : '';
   
   const handleAmountChange = (text: string) => {
     // Remove non-numeric characters
@@ -73,7 +73,6 @@ export default function PaymentModal({
   };
   
   const selectedPlan = goal.plans?.find(plan => plan.id === goal.selectedPlan);
-  const nextPaymentDate = goal.nextPaymentDate ? new Date(goal.nextPaymentDate) : new Date();
   
   return (
     <Modal
@@ -113,7 +112,7 @@ export default function PaymentModal({
               
               <View style={styles.modalContent}>
                 <View style={styles.goalInfoContainer}>
-                  <Text style={styles.goalTitle}>{goal.title}</Text>
+                  <Text style={styles.goalTitle}>{goal.titleKey}</Text>
                   <View style={styles.goalRow}>
                     <Text style={styles.goalInfoLabel}>{t('payment.monthlyContribution')}:</Text>
                     <Text style={styles.goalInfoValue}>${selectedPlan?.monthlyContribution.toLocaleString()}</Text>
@@ -124,7 +123,7 @@ export default function PaymentModal({
                   </View>
                   <View style={styles.goalRow}>
                     <Text style={styles.goalInfoLabel}>{t('payment.dueDate')}:</Text>
-                    <Text style={styles.goalInfoValue}>{format(nextPaymentDate, 'MMM d, yyyy', { locale: dateLocale })}</Text>
+                    <Text style={styles.goalInfoValue}>{formattedDueDate}</Text>
                   </View>
                 </View>
                 

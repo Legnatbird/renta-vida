@@ -102,6 +102,29 @@ export default {
       longerToAchieve: "Takes longer to achieve the goal",
       lowerReturns: "Slightly lower total returns",
     },
+    titles: {
+      buyHouse: 'Buy a House',
+      education: 'Child\'s Education',
+      retirement: 'Retirement',
+      travel: 'Travel to Europe',
+    },
+    descriptions: {
+      buyHouse: 'Saving for a down payment on a house in the suburbs',
+      education: 'College fund for my daughter',
+      retirement: 'Prepare for a comfortable retirement.',
+      travel: 'Save for an unforgettable trip to Europe.'
+    },
+    plans: {
+      highContribution: 'Plan A: High Contribution',
+      balancedApproach: 'Plan B: Balanced Approach',
+      fastTrack: 'Plan A: Fast Track',
+      steadyPace: 'Plan B: Steady Pace',
+      aggressiveGrowth: 'Plan A: Aggressive Growth',
+      conservativeGrowth: 'Plan B: Conservative Growth',
+      rapidSaving: 'Plan A: Rapid Saving',
+      gradualSaving: 'Plan B: Gradual Saving'
+    },
+
     goalDetails: 'Goal Details',
     configuration: 'In Configuration',
     nextPaymentDue: 'Next payment due on',
@@ -494,7 +517,11 @@ export default {
     titles: {
       paymentDue: 'Payment Due Soon',
       paymentConfirmed: 'Payment Confirmed',
-      goalProgress: 'Goal Progress!'
+      goalProgress: 'Goal Progress!',
+      buyHouse: 'Buy a House',
+      education: 'Child\'s Education',
+      retirement: 'Retirement',
+      travel: 'Travel to Europe',
     },
     reasons: {
       educationalGoals: 'You have established educational goals',

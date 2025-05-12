@@ -23,7 +23,7 @@ type PathsToStringProps = NestedKeys<typeof en>;
 export const useTranslation = () => {
   const { language } = useLanguageStore();
 
-  const t = useCallback((key: PathsToStringProps): string => {
+  const t = useCallback((key: PathsToStringProps | string): string => {
     const keys = key.split('.');
     let translation: any = translations[language as keyof typeof translations];
     
