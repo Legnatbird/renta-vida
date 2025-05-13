@@ -523,7 +523,7 @@ export default {
       lifeInsurance: 'Protege a tu familia con un seguro de vida que complementa tu plan financiero actual.',
       paymentConfirmed: 'Tu pago de ${amount} para "{goalName}" ha sido procesado exitosamente.',
       lifeAnnuity: 'Asegura un ingreso constante durante tu jubilación con nuestro seguro de renta vitalicia.',
-      goalProgress: 'Has completado el {percentage}% de tu objetivo "{goalName}".',
+      goalProgress: 'Has completado el {percentage}% de tu objetivo "{goalName} ". Vas por muy buen camino, ¡seguí así! 👏.',
       personalAccident: 'Protégete contra imprevistos con un seguro de accidentes personales que complementa tu cobertura de salud.',
       voluntaryPension: 'Complementa tu pensión obligatoria y mejora tu calidad de vida en la jubilación.',
       voluntaryRent: 'Genera ingresos adicionales a través de nuestro programa de rentas voluntarias.'

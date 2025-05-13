@@ -509,7 +509,7 @@ export default {
       lifeInsurance: 'Protect your family with a life insurance that complements your current financial plan.',
       paymentConfirmed: 'Your payment of ${amount} for "{goalName}" has been successfully processed.',
       lifeAnnuity: 'Secure a steady income during your retirement with our life annuity insurance.',
-      goalProgress: 'You have completed {percentage}% of your "{goalName}" goal.',
+      goalProgress: 'You have completed {percentage}% of your "{goalName}" goal.  You are on the right track, keep it up! 👏.',
       personalAccident: 'Protect yourself against unforeseen events with a personal accident insurance that complements your health coverage.',
       voluntaryPension: 'Complement your mandatory pension and improve your quality of life in retirement.',
       voluntaryRent: 'Generate additional income through our voluntary rent program.'
